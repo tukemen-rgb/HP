@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="SALACIA STUDIO">
+  <title>SALACIA STUDIO — アイコン</title>
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#05202F"/>
+      <stop offset="0.55" stop-color="#0B3B57"/>
+      <stop offset="1" stop-color="#136A8C"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.28" r="0.45">
+      <stop offset="0" stop-color="#F0C86A" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#F0C86A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#sea)"/>
+  <rect width="1024" height="1024" fill="url(#sun)"/>
+  <!-- いるか座＝導きの星 -->
+  <circle cx="512" cy="316" r="34" fill="#F0C86A"/>
+  <circle cx="672" cy="212" r="9" fill="#EAF6FA" opacity="0.7"/>
+  <circle cx="356" cy="250" r="7" fill="#EAF6FA" opacity="0.55"/>
+  <!-- 穏やかに輝く海 -->
+  <path d="M132 596 C 244 548, 356 604, 468 624 C 580 644, 692 588, 804 566 C 848 557, 872 556, 892 558"
+        fill="none" stroke="#35B0C9" stroke-width="38" stroke-linecap="round"/>
+  <path d="M132 728 C 244 686, 356 738, 468 754 C 580 770, 692 720, 804 700"
+        fill="none" stroke="#1C7FA0" stroke-width="26" stroke-linecap="round" opacity="0.75"/>
+  <text x="524" y="884" text-anchor="middle"
+        font-family="Jost, 'Century Gothic', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif"
+        font-size="88" font-weight="300" letter-spacing="24" fill="#EAF6FA" opacity="0.85">SALACIA</text>
+</svg>

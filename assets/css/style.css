@@ -1,0 +1,1736 @@
+@charset "utf-8";
+/* ============================================================
+   SALACIA STUDIO — corporate site stylesheet
+   Palette / motifs are derived from the brand guideline:
+     深い海 #0B3B57 / 海 #1C7FA0 / 陽に輝く海 #35B0C9
+     陽光・星 #F0C86A (#E0A93F) / 波の泡 #EAF6FA
+   ============================================================ */
+
+/* ---------- 1. Tokens ---------- */
+:root {
+  --abyss: #05202f;
+  --deep: #0b3b57;
+  --sea: #1c7fa0;
+  --shine: #35b0c9;
+  --gold: #f0c86a;
+  --gold-deep: #e0a93f;
+  --foam: #eaf6fa;
+  --white: #ffffff;
+
+  --ink: #10303f;
+  --ink-soft: #4a6b7a;
+  --line: rgba(11, 59, 87, 0.12);
+  --line-strong: rgba(11, 59, 87, 0.22);
+
+  --bg: var(--white);
+  --bg-soft: #f6fbfd;
+
+  --font-latin: "Jost", "Century Gothic", "Avenir Next", "Helvetica Neue", sans-serif;
+  --font-ja: "Zen Kaku Gothic New", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP",
+    "Yu Gothic", "Meiryo", sans-serif;
+  --font-body: var(--font-ja);
+  --font-display: var(--font-latin);
+
+  --container: 1160px;
+  --gutter: clamp(1.25rem, 5vw, 3rem);
+  --radius: 4px;
+  --header-h: 76px;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --shadow-sm: 0 1px 2px rgba(11, 59, 87, 0.06), 0 8px 24px -12px rgba(11, 59, 87, 0.18);
+  --shadow-md: 0 2px 4px rgba(11, 59, 87, 0.06), 0 24px 48px -24px rgba(11, 59, 87, 0.28);
+}
+
+/* ---------- 2. Reset / base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.9;
+  font-feature-settings: "palt" 1;
+  letter-spacing: 0.02em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-wrap: anywhere;
+}
+
+img,
+picture {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* svg には max-width を掛けない（親幅の 200% で流れる波のため） */
+svg {
+  display: block;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+}
+
+p {
+  margin: 0 0 1.5em;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: var(--sea);
+  text-decoration: none;
+  transition: color 0.25s var(--ease), opacity 0.25s var(--ease);
+}
+
+a:hover {
+  color: var(--deep);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold-deep);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: rgba(53, 176, 201, 0.24);
+}
+
+/* ---------- 3. Layout ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container--narrow {
+  max-width: 800px;
+}
+
+.section {
+  padding-block: clamp(4.5rem, 11vw, 8.5rem);
+}
+
+.section--soft {
+  background: var(--bg-soft);
+}
+
+.section--deep {
+  position: relative;
+  overflow: hidden;
+  background: var(--deep);
+  color: var(--foam);
+}
+
+.section--deep h2,
+.section--deep h3 {
+  color: var(--white);
+}
+
+.skip-link {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  translate: -50% -150%;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: var(--deep);
+  color: var(--white);
+  font-size: 0.85rem;
+  transition: translate 0.2s var(--ease);
+}
+
+.skip-link:focus {
+  translate: -50% 0;
+  color: var(--white);
+}
+
+/* ---------- 4. Section headings ---------- */
+.sec-head {
+  margin-bottom: clamp(2.5rem, 5vw, 3.75rem);
+}
+
+.sec-head--center {
+  text-align: center;
+}
+
+.eyebrow {
+  display: block;
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--sea);
+}
+
+.section--deep .eyebrow {
+  color: var(--gold);
+}
+
+.eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 1.75rem;
+  height: 1px;
+  margin-right: 0.9rem;
+  vertical-align: 0.28em;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+.sec-head--center .eyebrow::before {
+  display: none;
+}
+
+.sec-title {
+  font-size: clamp(1.55rem, 3.6vw, 2.3rem);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--deep);
+}
+
+.sec-lead {
+  max-width: 46em;
+  margin-top: 1.5rem;
+  color: var(--ink-soft);
+}
+
+.sec-head--center .sec-lead {
+  margin-inline: auto;
+}
+
+.section--deep .sec-title {
+  color: var(--white);
+}
+
+.section--deep .sec-lead {
+  color: rgba(234, 246, 250, 0.78);
+}
+
+/* ---------- 5. Logo (CSS wordmark — matches the SVG artwork) ---------- */
+.logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1em;
+  color: var(--deep);
+  line-height: 1;
+}
+
+.logo:hover {
+  color: var(--deep);
+  opacity: 0.78;
+}
+
+.logo__letters {
+  position: relative;
+  display: block;
+  padding-bottom: 0.86em;
+  font-family: var(--font-display);
+  font-weight: 200;
+  font-size: var(--logo-size, 1.18rem);
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+  white-space: nowrap;
+}
+
+.logo__i {
+  position: relative;
+}
+
+/* 「I」の上の一番星（いるか座＝導きの星） */
+.logo__i::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.03em);
+  translate: -50% 0;
+  width: 0.2em;
+  height: 0.2em;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0.5em rgba(240, 200, 106, 0.55);
+}
+
+/* 波のアンダーライン：文字幅にぴったり合わせるため絶対配置 */
+.logo__wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.18em;
+  height: 0.5em;
+  fill: none;
+  stroke: var(--sea);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.logo__sub {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: calc(var(--logo-size, 1.18rem) * 0.5);
+  letter-spacing: 0.52em;
+  text-indent: 0.52em;
+  color: var(--sea);
+  white-space: nowrap;
+}
+
+/* ダーク背景バリエーション */
+.logo--on-dark {
+  color: var(--white);
+}
+
+.logo--on-dark:hover {
+  color: var(--white);
+}
+
+.logo--on-dark .logo__wave {
+  stroke: var(--shine);
+}
+
+.logo--on-dark .logo__sub {
+  color: var(--gold);
+}
+
+/* ---------- 6. Header ---------- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: saturate(150%) blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+}
+
+.header.is-scrolled {
+  border-bottom-color: var(--line);
+  box-shadow: 0 1px 20px -12px rgba(11, 59, 87, 0.4);
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: var(--header-h);
+  /* ロゴの「一番星」が上端で切れないよう余白を確保 */
+  padding-block: 0.55rem;
+}
+
+.header .logo {
+  --logo-size: 1.05rem;
+}
+
+.nav__list {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.1rem, 2.4vw, 2.1rem);
+  list-style: none;
+}
+
+.nav__link {
+  position: relative;
+  display: block;
+  padding-block: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--deep);
+}
+
+.nav__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0.15rem;
+  width: 100%;
+  height: 1px;
+  background: var(--gold-deep);
+  scale: 0 1;
+  transform-origin: left;
+  transition: scale 0.35s var(--ease);
+}
+
+.nav__link:hover::after,
+.nav__link[aria-current="page"]::after {
+  scale: 1 1;
+}
+
+.nav__link[aria-current="page"] {
+  color: var(--sea);
+}
+
+.nav__ja {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--font-ja);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  text-transform: none;
+}
+
+.nav-toggle {
+  display: none;
+  position: relative;
+  z-index: 60;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.nav-toggle span {
+  position: absolute;
+  left: 11px;
+  width: 22px;
+  height: 1.5px;
+  background: var(--deep);
+  transition: translate 0.3s var(--ease), rotate 0.3s var(--ease), opacity 0.2s var(--ease);
+}
+
+.nav-toggle span:nth-child(1) {
+  top: 16px;
+}
+
+.nav-toggle span:nth-child(2) {
+  top: 22px;
+}
+
+.nav-toggle span:nth-child(3) {
+  top: 28px;
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(1) {
+  translate: 0 6px;
+  rotate: 45deg;
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] span:nth-child(3) {
+  translate: 0 -6px;
+  rotate: -45deg;
+}
+
+@media (max-width: 860px) {
+  .nav-toggle {
+    display: block;
+  }
+
+  /* ドロワーを開いている間はヘッダーの backdrop-filter を無効化する。
+     filter 系のプロパティが効いた要素は position: fixed の基準になってしまうため。 */
+  body.is-nav-open {
+    overflow: hidden;
+  }
+
+  body.is-nav-open .header {
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom-color: transparent;
+    box-shadow: none;
+  }
+
+  .header .logo {
+    position: relative;
+    z-index: 60;
+  }
+
+  .nav {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: var(--white);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s var(--ease), visibility 0.3s var(--ease);
+  }
+
+  .nav.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nav__list {
+    flex-direction: column;
+    gap: 1.75rem;
+    text-align: center;
+  }
+
+  .nav__link {
+    font-size: 0.95rem;
+    letter-spacing: 0.26em;
+  }
+
+  .nav__ja {
+    font-size: 0.7rem;
+  }
+}
+
+/* ---------- 7. Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75em;
+  padding: 1em 2.1em;
+  border: 1px solid var(--deep);
+  border-radius: 999px;
+  background: var(--deep);
+  color: var(--white);
+  font-family: var(--font-ja);
+  font-size: 0.92rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease),
+    translate 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+
+.btn:hover {
+  background: var(--sea);
+  border-color: var(--sea);
+  color: var(--white);
+  translate: 0 -2px;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn__arrow {
+  width: 1.15em;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s var(--ease);
+}
+
+.btn:hover .btn__arrow {
+  width: 1.7em;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--deep);
+}
+
+.btn--ghost:hover {
+  background: var(--deep);
+  border-color: var(--deep);
+  color: var(--white);
+}
+
+.btn--light {
+  background: transparent;
+  border-color: rgba(234, 246, 250, 0.55);
+  color: var(--white);
+}
+
+.btn--light:hover {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--deep);
+}
+
+.btn--gold {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--deep);
+}
+
+.btn--gold:hover {
+  background: var(--gold-deep);
+  border-color: var(--gold-deep);
+  color: var(--abyss);
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  font-family: var(--font-ja);
+  font-size: 0.92rem;
+  letter-spacing: 0.08em;
+  color: var(--sea);
+}
+
+.text-link .btn__arrow {
+  background: currentColor;
+}
+
+.text-link:hover .btn__arrow {
+  width: 1.7em;
+}
+
+/* ---------- 8. Hero ---------- */
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: min(92svh, 900px);
+  padding-block: clamp(5rem, 14vh, 9rem);
+  overflow: hidden;
+  background: linear-gradient(175deg, var(--abyss) 0%, var(--deep) 52%, #0f4c6d 100%);
+  color: var(--foam);
+  isolation: isolate;
+}
+
+.hero__glow {
+  position: absolute;
+  z-index: -2;
+  top: -22vh;
+  right: -6vw;
+  width: min(58vw, 620px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240, 200, 106, 0.22) 0%, rgba(240, 200, 106, 0) 66%);
+  pointer-events: none;
+}
+
+.hero__stars {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero__stars circle {
+  fill: var(--foam);
+}
+
+.hero__stars .star--gold {
+  fill: var(--gold);
+}
+
+.hero__stars circle {
+  animation: twinkle 5.5s ease-in-out infinite;
+}
+
+.hero__stars circle:nth-child(2n) {
+  animation-duration: 7s;
+  animation-delay: -1.6s;
+}
+
+.hero__stars circle:nth-child(3n) {
+  animation-duration: 8.5s;
+  animation-delay: -3.2s;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+/* いるか座（デルフィヌス）— サラキアを導いたイルカ */
+.hero__delphinus {
+  position: absolute;
+  z-index: -2;
+  top: clamp(4rem, 12vh, 8rem);
+  right: clamp(1.5rem, 7vw, 6rem);
+  width: clamp(120px, 18vw, 210px);
+  height: auto;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.hero__delphinus line {
+  stroke: var(--foam);
+  stroke-width: 0.8;
+  opacity: 0.35;
+}
+
+.hero__delphinus circle {
+  fill: var(--foam);
+}
+
+.hero__delphinus .star--gold {
+  fill: var(--gold);
+  animation: twinkle 4.5s ease-in-out infinite;
+}
+
+.hero__delphinus text {
+  fill: rgba(234, 246, 250, 0.55);
+  font-family: var(--font-latin);
+  font-size: 9px;
+  letter-spacing: 2.6px;
+}
+
+@media (max-width: 700px) {
+  .hero__delphinus {
+    opacity: 0.3;
+  }
+}
+
+.hero__waves {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: min(46vh, 380px);
+  pointer-events: none;
+}
+
+.wave {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 200%;
+  height: 100%;
+}
+
+.wave path {
+  stroke: none;
+}
+
+.wave--1 {
+  fill: rgba(53, 176, 201, 0.16);
+  animation: wave-drift 19s linear infinite;
+}
+
+.wave--2 {
+  fill: rgba(28, 127, 160, 0.3);
+  animation: wave-drift 27s linear infinite reverse;
+}
+
+.wave--3 {
+  fill: rgba(5, 32, 47, 0.55);
+  animation: wave-drift 38s linear infinite;
+}
+
+@keyframes wave-drift {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: -50% 0;
+  }
+}
+
+.hero__inner {
+  position: relative;
+  width: 100%;
+}
+
+.hero__mark {
+  --logo-size: clamp(1.5rem, 4.4vw, 2.6rem);
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+  align-items: flex-start;
+}
+
+.hero__eyebrow {
+  display: block;
+  margin-bottom: 1.4rem;
+  font-family: var(--font-display);
+  font-size: clamp(0.66rem, 1.6vw, 0.76rem);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.hero__title {
+  max-width: 22em;
+  font-size: clamp(1.85rem, 5.4vw, 3.4rem);
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: 0.06em;
+  color: var(--white);
+}
+
+.hero__title .gold {
+  color: var(--gold);
+}
+
+.hero__lead {
+  max-width: 34em;
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+  color: rgba(234, 246, 250, 0.82);
+  font-size: clamp(0.94rem, 1.6vw, 1.03rem);
+}
+
+.hero__actions {
+  margin-top: clamp(2.25rem, 5vw, 3.25rem);
+}
+
+.hero__scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 1.75rem;
+  translate: -50% 0;
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(234, 246, 250, 0.6);
+}
+
+.hero__scroll span:last-child {
+  width: 1px;
+  height: 42px;
+  background: linear-gradient(to bottom, rgba(234, 246, 250, 0.7), rgba(234, 246, 250, 0));
+  animation: scroll-hint 2.4s var(--ease) infinite;
+}
+
+@keyframes scroll-hint {
+  0% {
+    scale: 1 0.2;
+    transform-origin: top;
+    opacity: 0;
+  }
+  40% {
+    scale: 1 1;
+    opacity: 1;
+  }
+  100% {
+    scale: 1 1;
+    opacity: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero__scroll {
+    display: none;
+  }
+}
+
+/* ---------- 9. Page header (sub pages) ---------- */
+.page-hero {
+  position: relative;
+  padding-block: clamp(4rem, 12vw, 7rem) clamp(5rem, 10vw, 6.5rem);
+  background: linear-gradient(170deg, var(--deep) 0%, #0f4c6d 100%);
+  color: var(--foam);
+  overflow: hidden;
+}
+
+.page-hero__wave {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 200%;
+  height: min(9vh, 72px);
+  fill: var(--white);
+  animation: wave-drift 32s linear infinite;
+}
+
+.page-hero--soft .page-hero__wave {
+  fill: var(--bg-soft);
+}
+
+.page-hero__inner {
+  position: relative;
+}
+
+.page-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 5.5vw, 3rem);
+  font-weight: 200;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.page-hero__ja {
+  display: block;
+  margin-top: 0.9rem;
+  font-family: var(--font-ja);
+  font-size: 0.86rem;
+  letter-spacing: 0.22em;
+  color: var(--gold);
+}
+
+.breadcrumb {
+  margin-bottom: 1.75rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  color: rgba(234, 246, 250, 0.65);
+}
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  list-style: none;
+}
+
+.breadcrumb li + li::before {
+  content: "/";
+  margin-right: 0.6rem;
+  opacity: 0.5;
+}
+
+.breadcrumb a {
+  color: rgba(234, 246, 250, 0.8);
+}
+
+.breadcrumb a:hover {
+  color: var(--gold);
+}
+
+/* ---------- 10. Cards / grids ---------- */
+.grid {
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2rem);
+}
+
+.grid--3 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+}
+
+.grid--2 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+}
+
+.card {
+  position: relative;
+  padding: clamp(1.75rem, 3.5vw, 2.5rem);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: translate 0.35s var(--ease), box-shadow 0.35s var(--ease),
+    border-color 0.35s var(--ease);
+}
+
+.card:hover {
+  translate: 0 -4px;
+  border-color: rgba(28, 127, 160, 0.35);
+  box-shadow: var(--shadow-md);
+}
+
+.card__icon {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 1.5rem;
+  fill: none;
+  stroke: var(--sea);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.card__icon .accent {
+  fill: var(--gold);
+  stroke: none;
+}
+
+.card__num {
+  display: block;
+  margin-bottom: 0.9rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  color: var(--gold-deep);
+}
+
+.card__title {
+  margin-bottom: 0.9rem;
+  font-size: 1.08rem;
+  letter-spacing: 0.08em;
+  color: var(--deep);
+}
+
+.card__title .en {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--font-display);
+  font-size: 0.66rem;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.card__text {
+  font-size: 0.94rem;
+  color: var(--ink-soft);
+}
+
+.card--flat:hover {
+  translate: none;
+  box-shadow: none;
+  border-color: var(--line);
+}
+
+/* ---------- 11. Feature / split blocks ---------- */
+.split {
+  display: grid;
+  gap: clamp(2rem, 6vw, 4.5rem);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .split {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .split--wide-text {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+}
+
+.split--top {
+  align-items: start;
+}
+
+.figure-sea {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: linear-gradient(165deg, var(--abyss), var(--deep) 60%, var(--sea));
+}
+
+.figure-sea__wave {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 200%;
+  height: 55%;
+  fill: rgba(53, 176, 201, 0.22);
+  animation: wave-drift 24s linear infinite;
+}
+
+.figure-sea .logo {
+  --logo-size: clamp(1.2rem, 3.2vw, 1.9rem);
+  position: relative;
+}
+
+/* ---------- 12. Definition table (会社概要) ---------- */
+.table-scroll {
+  overflow-x: auto;
+}
+
+.profile {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.profile th,
+.profile td {
+  padding: 1.15rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.profile th {
+  width: 12em;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--deep);
+  white-space: nowrap;
+  background: rgba(234, 246, 250, 0.5);
+}
+
+.profile tr:first-child th,
+.profile tr:first-child td {
+  border-top: 1px solid var(--line);
+}
+
+.profile td {
+  color: var(--ink-soft);
+}
+
+@media (max-width: 620px) {
+  .profile,
+  .profile tbody,
+  .profile tr,
+  .profile th,
+  .profile td {
+    display: block;
+    width: auto;
+  }
+
+  .profile th {
+    border-bottom: 0;
+    padding-bottom: 0.5rem;
+  }
+
+  .profile tr:first-child td {
+    border-top: 0;
+  }
+}
+
+/* ---------- 13. News list ---------- */
+.news-list {
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.news-list li {
+  border-bottom: 1px solid var(--line);
+}
+
+.news-item {
+  display: grid;
+  gap: 0.35rem 1.75rem;
+  padding: 1.6rem 0.25rem;
+  align-items: baseline;
+  transition: background 0.3s var(--ease), padding-inline 0.3s var(--ease);
+}
+
+@media (min-width: 700px) {
+  .news-item {
+    grid-template-columns: 8.5rem 7.5rem 1fr;
+  }
+}
+
+a.news-item:hover {
+  background: rgba(234, 246, 250, 0.7);
+  padding-inline: 0.75rem;
+}
+
+.news-item__date {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
+}
+
+.news-item__tag {
+  justify-self: start;
+  padding: 0.15em 0.9em;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  color: var(--sea);
+}
+
+.news-item__title {
+  font-size: 0.98rem;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+}
+
+/* ---------- 14. Works ---------- */
+.work {
+  position: relative;
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+}
+
+@media (min-width: 820px) {
+  .work {
+    grid-template-columns: 0.9fr 1.1fr;
+    align-items: center;
+  }
+}
+
+.work__visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, var(--abyss), var(--deep) 65%, var(--sea));
+  color: var(--foam);
+}
+
+.work__visual-label {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: clamp(0.68rem, 2vw, 0.8rem);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.work__status {
+  display: inline-block;
+  margin-bottom: 1.1rem;
+  padding: 0.2em 1em;
+  border-radius: 999px;
+  background: rgba(240, 200, 106, 0.18);
+  color: var(--gold-deep);
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.work__title {
+  margin-bottom: 1.1rem;
+  font-size: clamp(1.25rem, 3vw, 1.6rem);
+  letter-spacing: 0.08em;
+  color: var(--deep);
+}
+
+.work__meta {
+  margin-top: 1.75rem;
+  list-style: none;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+.work__meta li {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-top: 1px dashed var(--line);
+}
+
+.work__meta dt,
+.work__meta b {
+  min-width: 6.5em;
+  font-weight: 500;
+  color: var(--deep);
+}
+
+/* ---------- 15. Brand assets ---------- */
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 146px), 1fr));
+  gap: 1.25rem;
+  list-style: none;
+}
+
+.swatch__chip {
+  height: 108px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.swatch__name {
+  margin-top: 0.9rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  color: var(--deep);
+}
+
+.swatch__hex {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+
+.logo-box {
+  display: grid;
+  place-items: center;
+  gap: 1.5rem;
+  padding: clamp(2rem, 5vw, 3.25rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.logo-box--light {
+  background: var(--white);
+}
+
+.logo-box--dark {
+  background: var(--deep);
+  border-color: transparent;
+}
+
+.logo-box .logo {
+  --logo-size: clamp(1.1rem, 3vw, 1.6rem);
+}
+
+.logo-box__caption {
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+}
+
+.logo-box--dark .logo-box__caption {
+  color: rgba(234, 246, 250, 0.72);
+}
+
+/* ---------- 16. Motif table ---------- */
+.motifs {
+  list-style: none;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.motifs li {
+  display: grid;
+  gap: 0.4rem 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+@media (min-width: 720px) {
+  .motifs li {
+    grid-template-columns: 15rem 1fr;
+    align-items: baseline;
+  }
+}
+
+.motifs b {
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--deep);
+}
+
+.motifs span {
+  font-size: 0.94rem;
+  color: var(--ink-soft);
+}
+
+.section--deep .motifs li {
+  border-bottom-color: rgba(234, 246, 250, 0.16);
+}
+
+.section--deep .motifs b {
+  color: var(--gold);
+}
+
+.section--deep .motifs span {
+  color: rgba(234, 246, 250, 0.82);
+}
+
+/* ---------- 17. Prose (policy / long text) ---------- */
+.prose h2 {
+  margin: 3rem 0 1.1rem;
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+  color: var(--deep);
+}
+
+.prose h2:first-child {
+  margin-top: 0;
+}
+
+/* .prose の中でもセクション見出しは本来の大きさを保つ */
+.prose h2.sec-title {
+  margin: 0;
+  font-size: clamp(1.55rem, 3.6vw, 2.3rem);
+}
+
+.prose h3 {
+  margin: 2rem 0 0.8rem;
+  font-size: 1rem;
+  color: var(--deep);
+}
+
+.prose ul,
+.prose ol {
+  margin: 0 0 1.5em;
+  padding-left: 1.4em;
+  color: var(--ink-soft);
+}
+
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li {
+  margin-bottom: 0.5em;
+}
+
+.prose p {
+  color: var(--ink-soft);
+}
+
+.note {
+  padding: 1.25rem 1.5rem;
+  border-left: 2px solid var(--gold);
+  background: rgba(240, 200, 106, 0.09);
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+/* ---------- 18. Contact form ---------- */
+.form {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.field label {
+  font-size: 0.86rem;
+  letter-spacing: 0.1em;
+  color: var(--deep);
+}
+
+.field .req {
+  margin-left: 0.5em;
+  font-size: 0.72rem;
+  color: var(--gold-deep);
+  letter-spacing: 0.1em;
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.field textarea {
+  min-height: 12rem;
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--sea);
+  box-shadow: 0 0 0 3px rgba(53, 176, 201, 0.18);
+}
+
+.field__hint {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.field--check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.field--check input {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-top: 0.45rem;
+  padding: 0;
+  accent-color: var(--sea);
+  flex: 0 0 auto;
+}
+
+.field--check label {
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: var(--ink-soft);
+}
+
+.form-status {
+  min-height: 1.5em;
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
+  color: var(--sea);
+}
+
+.contact-list {
+  list-style: none;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.contact-list dt,
+.contact-list b {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--sea);
+}
+
+/* ---------- 19. CTA band ---------- */
+.cta {
+  position: relative;
+  padding-block: clamp(4rem, 9vw, 6.5rem);
+  background: linear-gradient(150deg, var(--abyss), var(--deep) 70%, #10557a);
+  color: var(--foam);
+  overflow: hidden;
+  text-align: center;
+}
+
+.cta__wave {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 200%;
+  height: 60%;
+  fill: rgba(53, 176, 201, 0.12);
+  animation: wave-drift 30s linear infinite;
+  pointer-events: none;
+}
+
+.cta__inner {
+  position: relative;
+}
+
+.cta__title {
+  font-size: clamp(1.4rem, 3.6vw, 2.05rem);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--white);
+}
+
+.cta__text {
+  max-width: 40em;
+  margin: 1.5rem auto 2.5rem;
+  color: rgba(234, 246, 250, 0.8);
+  font-size: 0.96rem;
+}
+
+.cta .btn-row {
+  justify-content: center;
+}
+
+/* ---------- 20. Footer ---------- */
+.footer {
+  padding-block: clamp(3rem, 7vw, 4.5rem) 2rem;
+  background: var(--abyss);
+  color: rgba(234, 246, 250, 0.7);
+  font-size: 0.88rem;
+}
+
+.footer__top {
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 4rem);
+  padding-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  border-bottom: 1px solid rgba(234, 246, 250, 0.14);
+}
+
+@media (min-width: 820px) {
+  .footer__top {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: start;
+  }
+}
+
+.footer .logo {
+  --logo-size: 1.15rem;
+  align-items: flex-start;
+}
+
+.footer__tagline {
+  margin-top: 1.75rem;
+  max-width: 26em;
+  font-size: 0.86rem;
+  color: rgba(234, 246, 250, 0.6);
+}
+
+.footer__nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 2rem;
+}
+
+.footer__nav h2 {
+  margin-bottom: 1.1rem;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.footer__nav ul {
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.footer__nav a {
+  color: rgba(234, 246, 250, 0.75);
+  font-size: 0.86rem;
+  letter-spacing: 0.06em;
+}
+
+.footer__nav a:hover {
+  color: var(--gold);
+}
+
+.footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.footer__copy {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: rgba(234, 246, 250, 0.5);
+}
+
+.footer__to-top {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(234, 246, 250, 0.7);
+}
+
+.footer__to-top:hover {
+  color: var(--gold);
+}
+
+/* ---------- 21. 404 ---------- */
+.notfound {
+  display: grid;
+  place-items: center;
+  min-height: 68svh;
+  padding-block: 5rem;
+  text-align: center;
+}
+
+.notfound__code {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 16vw, 8rem);
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  color: var(--shine);
+}
+
+/* ---------- 22. Reveal on scroll ---------- */
+.reveal {
+  opacity: 0;
+  translate: 0 24px;
+  transition: opacity 0.8s var(--ease), translate 0.8s var(--ease);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+
+.reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+
+/* ---------- 23. Utilities ---------- */
+.u-center {
+  text-align: center;
+}
+
+.u-mt-l {
+  margin-top: clamp(2rem, 5vw, 3rem);
+}
+
+.u-mt-m {
+  margin-top: 1.75rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- 24. Motion / print preferences ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    translate: none;
+  }
+}
+
+@media print {
+  .header,
+  .footer,
+  .hero__waves,
+  .cta {
+    display: none;
+  }
+
+  body {
+    color: #000;
+  }
+}
