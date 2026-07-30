@@ -1,4 +1,4 @@
-/* SALACIA STUDIO — お問い合わせフォーム
+/* SIDRA STUDIO — お問い合わせフォーム
  *
  * ENDPOINT を設定すると、その URL に POST 送信します（Formspree / Basin など）。
  * 空のままの場合は、入力内容を本文に差し込んでメールソフトを起動します。
@@ -8,7 +8,7 @@
   "use strict";
 
   var ENDPOINT = ""; // 例: "https://formspree.io/f/xxxxxxxx"
-  var MAIL_TO = "contact@salaciastudio.com";
+  var MAIL_TO = "contact@sidrastudio.com";
 
   var form = document.getElementById("contact-form");
   if (!form) return;
@@ -46,7 +46,7 @@
     };
 
     if (!ENDPOINT) {
-      var subject = "【お問い合わせ】" + (data.subject || "SALACIA STUDIO") + "／" + (data.name || "");
+      var subject = "【お問い合わせ】" + (data.subject || "SIDRA STUDIO") + "／" + (data.name || "");
       window.location.href =
         "mailto:" + MAIL_TO + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(buildBody(data));
       setStatus("メールソフトを起動しました。内容をご確認のうえ送信してください。", false);

@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="SALACIA STUDIO">
-  <title>SALACIA STUDIO — アイコン</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="SIDRA STUDIO">
+  <title>SIDRA STUDIO — アイコン</title>
   <defs>
     <linearGradient id="sea" x1="0" y1="0" x2="0.4" y2="1">
       <stop offset="0" stop-color="#05202F"/>
@@ -24,5 +24,5 @@
         fill="none" stroke="#1C7FA0" stroke-width="26" stroke-linecap="round" opacity="0.75"/>
   <text x="524" y="884" text-anchor="middle"
         font-family="Jost, 'Century Gothic', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif"
-        font-size="88" font-weight="300" letter-spacing="24" fill="#EAF6FA" opacity="0.85">SALACIA</text>
+        font-size="88" font-weight="300" letter-spacing="24" fill="#EAF6FA" opacity="0.85">SIDRA</text>
 </svg>

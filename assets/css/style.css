@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* ============================================================
-   SALACIA STUDIO — corporate site stylesheet
+   SIDRA STUDIO — corporate site stylesheet
    Palette / motifs are derived from the brand guideline:
      深い海 #0B3B57 / 海 #1C7FA0 / 陽に輝く海 #35B0C9
      陽光・星 #F0C86A (#E0A93F) / 波の泡 #EAF6FA
@@ -301,11 +301,12 @@ a:hover {
   box-shadow: 0 0 0.5em rgba(240, 200, 106, 0.55);
 }
 
-/* 波のアンダーライン：文字幅にぴったり合わせるため絶対配置 */
+/* 波のアンダーライン：文字幅にぴったり合わせるため絶対配置。
+   width を明示しないと SVG の viewBox 由来の縦横比が優先され、文字より横に伸びる。 */
 .logo__wave {
   position: absolute;
   left: 0;
-  right: 0;
+  width: 100%;
   bottom: 0.18em;
   height: 0.5em;
   fill: none;

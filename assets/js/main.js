@@ -1,4 +1,4 @@
-/* SALACIA STUDIO — site behaviour (no dependencies) */
+/* SIDRA STUDIO — site behaviour (no dependencies) */
 (function () {
   "use strict";
 

@@ -1,11 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 480" width="1280" height="480" role="img" aria-labelledby="salacia-logo-dark-title">
-  <title id="salacia-logo-dark-title">SALACIA STUDIO</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 480" width="1280" height="480" role="img" aria-labelledby="sidra-logo-dark-title">
+  <title id="sidra-logo-dark-title">SIDRA STUDIO</title>
   <!-- ダーク背景用ワードマーク（白文字 + 金の星 + 波のアンダーライン） -->
   <g font-family="Jost, 'Century Gothic', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif">
-    <text x="672" y="222" text-anchor="middle" font-size="152" font-weight="200" letter-spacing="64" fill="#FFFFFF">SALACIA</text>
-    <circle cx="822" cy="78" r="13" fill="#F0C86A"/>
-    <path d="M236 295 C 320 273, 404 297, 490 305 C 576 313, 640 292, 726 288 C 812 284, 880 305, 960 301 C 1000 299, 1024 294, 1044 291"
-          fill="none" stroke="#35B0C9" stroke-width="14" stroke-linecap="round"/>
-    <text x="635" y="392" text-anchor="middle" font-size="62" font-weight="300" letter-spacing="48" fill="#F0C86A">STUDIO</text>
+    <text x="672" y="222" text-anchor="middle" font-size="152" font-weight="200" letter-spacing="64" fill="#FFFFFF">SIDRA</text>
+    <circle cx="481" cy="78" r="13" fill="#F0C86A"/>
+    <path d="M301 295 C 371 273, 442 297, 514 305 C 586 313, 640 292, 712 288 C 785 284, 842 305, 909 301 C 943 299, 963 294, 980 291"
+          fill="none" stroke="#35B0C9" stroke-width="12" stroke-linecap="round"/>
+    <text x="664" y="392" text-anchor="middle" font-size="62" font-weight="300" letter-spacing="48" fill="#F0C86A">STUDIO</text>
   </g>
 </svg>

@@ -1,12 +1,12 @@
-# SALACIA STUDIO — 企業サイト
+# SIDRA STUDIO — 企業サイト
 
-ゲーム開発スタジオ **SALACIA STUDIO（サラキア・スタジオ）** の公式サイトです。
+ゲーム開発スタジオ **SIDRA STUDIO（シドラ・スタジオ）** の公式サイトです。
 ビルド不要の静的サイト（HTML / CSS / 素の JavaScript）で、そのままどのホスティングにも置けます。
 
-- タグライン：はじめて海を見た日の気持ちを、まだ知らない物語に。
-- コピーの軸：海がくれる三つの感情 — ①息をのむ美しさ ②その先へのわくわく ③あとに残る余韻。
-  この順序をトップの Concept、Works の姿勢、代表メッセージで共通して使っています。
-- モチーフ：穏やかに輝く海（波＝①）／導きのイルカ（②）／いるか座（③・海から星へ）／陽光の金
+- パーパス：クリエイターが、より活躍できる環境づくり。
+- ビジョン・バリューは検討中です。確定後に、トップの Purpose 下と
+  スタジオについてのページへ追加します。
+- ロゴのモチーフ（波・星）の意味づけも、社名変更にともない再検討中です。
 
 ---
 
@@ -14,8 +14,8 @@
 
 | ファイル | ページ | 内容 |
 |---|---|---|
-| `index.html` | トップ | ヒーロー、コンセプト3項目、スタジオ紹介、作品、お知らせ、お問い合わせ導線 |
-| `about.html` | スタジオについて | 代表メッセージ、ブランドストーリー（サラキア神話）、事業内容、スタジオ概要 |
+| `index.html` | トップ | ヒーロー、パーパス、作品、お知らせ、お問い合わせ導線 |
+| `about.html` | スタジオについて | 代表メッセージ、事業内容、スタジオ概要 |
 | `works.html` | 作品 | 制作中タイトル、作品づくりの姿勢 |
 | `news.html` | お知らせ | お知らせ一覧 |
 | `brand.html` | ブランド素材 | ロゴ（ライト／ダーク）、アイコン、カラーパレット、使用ガイドライン |
@@ -53,13 +53,13 @@ npx serve .        # または python3 -m http.server 8000
 
 ### 1. ドメイン
 
-現在は `https://salaciastudio.com/` を仮のドメインとして記載しています。
+現在は `https://sidrastudio.com/` を仮のドメインとして記載しています。
 決まったドメインへ一括置換してください。
 
 ```bash
-# 例：salacia.studio に変更する場合
-grep -rl 'salaciastudio.com' . --include='*.html' --include='*.txt' --include='*.xml' \
-  | xargs sed -i 's|https://salaciastudio.com|https://salacia.studio|g'
+# 例：sidra.studio に変更する場合
+grep -rl 'sidrastudio.com' . --include='*.html' --include='*.txt' --include='*.xml' \
+  | xargs sed -i 's|https://sidrastudio.com|https://sidra.studio|g'
 ```
 
 対象：各ページの `canonical` / `og:url` / `og:image` / 構造化データ、`robots.txt`、`sitemap.xml`
@@ -68,7 +68,7 @@ grep -rl 'salaciastudio.com' . --include='*.html' --include='*.txt' --include='*
 
 ### 2. メールアドレス
 
-仮に `contact@salaciastudio.com` を記載しています。
+仮に `contact@sidrastudio.com` を記載しています。
 
 - `contact.html`（連絡先・フォーム送信先）
 - `privacy.html`（お問い合わせ窓口）
@@ -77,10 +77,10 @@ grep -rl 'salaciastudio.com' . --include='*.html' --include='*.txt' --include='*
 
 ### 3. スタジオ概要（`about.html`）
 
-登記前は法人格を名乗れないため（会社法第7条）、名称は「SALACIA STUDIO」のままにしています。
+登記前は法人格を名乗れないため（会社法第7条）、名称は「SIDRA STUDIO」のままにしています。
 設立日の欄も設けていません。登記完了後に、以下を追加・更新してください。
 
-- 名称 → 法人格つきの商号（例：`合同会社SALACIA STUDIO`）
+- 名称 → 法人格つきの商号（例：`合同会社SIDRA STUDIO`）
 - 代表者名（ハンドルネーム）
 - 必要であれば「設立」の行を追加
 
@@ -166,4 +166,4 @@ npx playwright screenshot --viewport-size=1200,630 tools/og-image.html assets/im
 
 ## ライセンス
 
-サイト内の文章・ロゴ・画像等の著作権は SALACIA STUDIO に帰属します。
+サイト内の文章・ロゴ・画像等の著作権は SIDRA STUDIO に帰属します。
