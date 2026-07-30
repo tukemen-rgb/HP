@@ -66,7 +66,24 @@ body {
   letter-spacing: 0.02em;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+}
+
+/* 和文は文節で折り返す（未対応ブラウザは通常の禁則処理にフォールバック） */
+.hero__title,
+.hero__lead,
+.sec-title,
+.sec-lead,
+.card__title,
+.card__text,
+.cta__title,
+.cta__text,
+.footer__tagline,
+.work__title,
+.note,
+.prose p,
+.prose li {
+  word-break: auto-phrase;
 }
 
 img,
@@ -1570,7 +1587,7 @@ a.news-item:hover {
 
 .footer__tagline {
   margin-top: 1.75rem;
-  max-width: 26em;
+  max-width: 30em;
   font-size: 0.86rem;
   color: rgba(234, 246, 250, 0.6);
 }
