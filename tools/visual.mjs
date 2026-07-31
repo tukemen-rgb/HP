@@ -14,7 +14,7 @@
  * 終了コード: エラーがあれば 1。
  */
 import { readdirSync, mkdirSync, existsSync } from "node:fs";
-import { join, dirname, resolve } from "node:path";
+import { join, dirname, resolve, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -34,7 +34,22 @@ try {
   }
 }
 
-const pages = readdirSync(ROOT).filter((f) => f.endsWith(".html")).sort();
+const SKIP_DIRS = new Set(["node_modules", ".git", ".preview", "tools"]);
+function collectPages(dir = ROOT) {
+  const out = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    if (entry.name.startsWith(".")) continue;
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      if (SKIP_DIRS.has(entry.name)) continue;
+      out.push(...collectPages(full));
+    } else if (entry.name.endsWith(".html")) {
+      out.push(relative(ROOT, full));
+    }
+  }
+  return out;
+}
+const pages = collectPages().sort();
 const problems = [];
 const note = (file, message) => problems.push({ file, message });
 
@@ -98,7 +113,7 @@ for (const page of pages) {
       await p.evaluate(() => document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-visible")));
       await p.waitForTimeout(1200);
       await p.screenshot({
-        path: join(SHOT_DIR, `${page.replace(".html", "")}-${width}.png`),
+        path: join(SHOT_DIR, `${page.replace(/[\\/]/g, "-").replace(".html", "")}-${width}.png`),
         fullPage: true,
       });
     }

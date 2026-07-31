@@ -28,6 +28,7 @@
 | `contact.html` | お問い合わせ | 問い合わせフォーム、その他の連絡先 |
 | `privacy.html` | プライバシーポリシー | 個人情報の取り扱い |
 | `404.html` | 404 | ページが見つからない場合 |
+| `news/_template.html` | お知らせ詳細の雛形 | 記事1本ぶんの型（noindex。コピーして使う） |
 
 その他：`robots.txt` / `sitemap.xml` / `.nojekyll`（GitHub Pages 用）
 
@@ -118,7 +119,12 @@ var ENDPOINT = "https://formspree.io/f/xxxxxxxx"; // ここに発行された UR
 </li>
 ```
 
-個別の詳細ページを作る場合は、`div.news-item` を `a.news-item`（`href` 付き）に変えるとホバー表示が有効になります。
+本文のある記事にする場合は、`news/_template.html` を
+`news/2026-09-01-xxxx.html` のような名前でコピーし、ファイル冒頭のコメントの手順に従って
+【 】の箇所を書き換えます。あわせて一覧側の `div.news-item` を
+`a.news-item`（`href="news/ファイル名.html"`）に変えると、リンクとホバー表示が有効になります。
+
+一覧だけで完結する短いお知らせは、詳細ページを作らず `div.news-item` のままで構いません。
 
 ### 6. 作品の追加
 

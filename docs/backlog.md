@@ -29,9 +29,6 @@
   Webフォントの `preload` 追加、フォント読み込み中のレイアウト移動（CLS）対策、
   OG画像など大きな画像の遅延読み込み。
 
-- [ ] **構造化データの拡充**
-  各ページに `BreadcrumbList`、トップに `WebSite` を追加する。
-
 - [ ] **sitemap の lastmod 自動更新**
   各 HTML の更新日時から `sitemap.xml` の `lastmod` を書き換えるスクリプトを追加し、
   `npm run verify` に組み込む。
@@ -40,10 +37,6 @@
   Cloudflare Pages / Netlify / Apache 向けのセキュリティヘッダ設定
   （`_headers`、`netlify.toml`、`.htaccess`）をコメント付きで用意する。
   適用は公開先が決まってから。
-
-- [ ] **お知らせの個別ページ**
-  記事が増えたとき用に、詳細ページの雛形を1枚用意する。
-  一覧の `div.news-item` を `a.news-item` に切り替えられる形にしておく。
 
 ## 完了
 
@@ -62,6 +55,14 @@
       tools/build-icons.mjs で PNG と ICO を生成し、site.webmanifest も追加
 - [x] ヘッダーの背景を紺に変更（2026-07-31・依頼）
       ロゴ・ナビ・ハンバーガー・モバイルドロワーをダーク背景用に反転
+- [x] お知らせの個別ページ（2026-07-31）
+      `news/_template.html` を追加。Cygames のお知らせ（日付 YYYY.MM.DD ＋
+      タイトル、詳細ページは別 URL）の作りを参考にした。
+      検証スクリプトはサブディレクトリも見るように変更
+- [x] 構造化データの拡充（2026-07-31）
+      パンくずのある6ページに `BreadcrumbList`、トップに `WebSite`、
+      お知らせ雛形に `NewsArticle` を追加。
+      JSON-LD が壊れていないかの確認を `tools/check.mjs` に追加
 
 ## 要確認（人の判断が要ると分かったもの）
 

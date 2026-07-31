@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<!--
+  お知らせの詳細ページ雛形。
+
+  使い方
+  1. このファイルを news/2026-08-01-xxxx.html のようにコピーする
+     （ファイル名がそのまま URL になるので、日付＋短い英字が扱いやすい）
+  2. 【 】で囲んだ箇所をすべて書き換える
+  3. <meta name="robots" content="noindex,nofollow"> の行を消す
+     （この雛形自体は検索結果に出したくないので付けている）
+  4. sitemap.xml に <url><loc>…</loc></url> を1件足す
+  5. news.html の一覧に1件足す。詳細ページがある記事は
+     <div class="news-item"> を <a class="news-item" href="news/ファイル名.html"> に
+     変える（閉じタグも </a> に）。リンクの見た目は CSS 側に用意済み
+  6. npm run verify を通す
+
+  この雛形は noindex なので、公開ページとしては数えられない。
+-->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>【記事タイトル】｜お知らせ｜SIDRA STUDIO</title>
+<meta name="description" content="【記事の要約を1〜2文で。検索結果に出る文章なので、本文の書き出しをそのまま使うより、内容がわかる形にまとめる】">
+<link rel="canonical" href="https://sidrastudio.com/news/【ファイル名】.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="SIDRA STUDIO">
+<meta property="og:title" content="【記事タイトル】｜SIDRA STUDIO">
+<meta property="og:description" content="【記事の要約】">
+<meta property="og:url" content="https://sidrastudio.com/news/【ファイル名】.html">
+<meta property="og:image" content="https://sidrastudio.com/assets/img/og-image.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0B3B57">
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="manifest" href="../site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="../assets/css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": "【記事タイトル】",
+  "datePublished": "【2026-08-01】",
+  "dateModified": "【2026-08-01】",
+  "url": "https://sidrastudio.com/news/【ファイル名】.html",
+  "image": "https://sidrastudio.com/assets/img/og-image.png",
+  "author": { "@type": "Organization", "name": "SIDRA STUDIO" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SIDRA STUDIO",
+    "logo": { "@type": "ImageObject", "url": "https://sidrastudio.com/assets/img/logo-onlight.svg" }
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sidrastudio.com/" },
+    { "@type": "ListItem", "position": 2, "name": "News", "item": "https://sidrastudio.com/news.html" },
+    { "@type": "ListItem", "position": 3, "name": "【記事タイトル】" }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<header class="header">
+  <div class="container header__inner">
+    <a class="logo" href="../index.html" aria-label="SIDRA STUDIO ホームへ">
+      <span class="logo__letters" aria-hidden="true">S<span class="logo__i">I</span>DRA<svg class="logo__wave" viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <path d="M3 7.5 C 26 4.6, 48 7.4, 66 8.9 C 84 10.4, 100 7.2, 118 6 C 136 4.8, 152 7.6, 170 8.2 C 181 8.5, 190 7.2, 197 6.2"/>
+      </svg></span>
+      <span class="logo__sub" aria-hidden="true">STUDIO</span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="global-nav" aria-label="メニューを開く">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav" id="global-nav" aria-label="グローバルナビゲーション">
+      <ul class="nav__list">
+        <li><a class="nav__link" href="../about.html">About<span class="nav__ja">スタジオ</span></a></li>
+        <li><a class="nav__link" href="../works.html">Works<span class="nav__ja">作品</span></a></li>
+        <li><a class="nav__link" href="../news.html" aria-current="page">News<span class="nav__ja">お知らせ</span></a></li>
+        <li><a class="nav__link" href="../brand.html">Brand<span class="nav__ja">ブランド</span></a></li>
+        <li><a class="nav__link" href="../contact.html">Contact<span class="nav__ja">お問い合わせ</span></a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="page-hero page-hero--soft">
+    <svg class="page-hero__wave" viewBox="0 0 2880 240" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <path d="M0,100 C 90,72 270,72 360,100 C 450,128 630,128 720,100 C 810,72 990,72 1080,100 C 1170,128 1350,128 1440,100 C 1530,72 1710,72 1800,100 C 1890,128 2070,128 2160,100 C 2250,72 2430,72 2520,100 C 2610,128 2790,128 2880,100 C 2970,72 3150,72 3240,100 C 3330,128 3510,128 3600,100 C 3690,72 3870,72 3960,100 C 4050,128 4230,128 4320,100 L4320,240 L0,240 Z"/>
+    </svg>
+    <div class="container page-hero__inner">
+      <nav class="breadcrumb" aria-label="現在の位置">
+        <ol>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../news.html">News</a></li>
+          <li aria-current="page">【記事タイトル】</li>
+        </ol>
+      </nav>
+      <h1 class="page-hero__title">News<span class="page-hero__ja">お知らせ</span></h1>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container container--narrow prose">
+
+      <div class="news-item">
+        <time class="news-item__date" datetime="【2026-08-01】">【2026.08.01】</time>
+        <span class="news-item__tag">【Studio】</span>
+      </div>
+
+      <h2 class="sec-title">【記事タイトル】</h2>
+
+      <p>
+        【本文。1段落は3〜4行までにとどめると読みやすい。
+        日付や数字は本文中にも書いておくと、SNS などに引用されたときに意味が通る】
+      </p>
+
+      <p>
+        【段落が続く場合はこの形で足す。見出しを入れたいときは h3 を使う】
+      </p>
+
+      <p class="note">
+        本件に関するお問い合わせは<a href="../contact.html">お問い合わせページ</a>よりご連絡ください。
+      </p>
+
+      <p class="u-mt-l"><a class="btn btn--ghost" href="../news.html">お知らせ一覧へ<span class="btn__arrow" aria-hidden="true"></span></a></p>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div>
+        <span class="logo logo--on-dark">
+          <span class="logo__letters" aria-hidden="true">S<span class="logo__i">I</span>DRA<svg class="logo__wave" viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <path d="M3 7.5 C 26 4.6, 48 7.4, 66 8.9 C 84 10.4, 100 7.2, 118 6 C 136 4.8, 152 7.6, 170 8.2 C 181 8.5, 190 7.2, 197 6.2"/>
+          </svg></span>
+          <span class="logo__sub" aria-hidden="true">STUDIO</span>
+        </span>
+        <p class="footer__tagline">
+          クリエイターが、より活躍できる環境をつくる。<br>
+          ゲームの企画・開発を行うスタジオです。
+        </p>
+      </div>
+
+      <nav class="footer__nav" aria-label="フッターナビゲーション">
+        <div>
+          <h2>Studio</h2>
+          <ul>
+            <li><a href="../about.html">スタジオについて</a></li>
+            <li><a href="../works.html">作品</a></li>
+            <li><a href="../news.html">お知らせ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Resources</h2>
+          <ul>
+            <li><a href="../brand.html">ブランド素材</a></li>
+            <li><a href="../contact.html">お問い合わせ</a></li>
+            <li><a href="../privacy.html">プライバシーポリシー</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="footer__bottom">
+      <small class="footer__copy">&copy; 2026 SIDRA STUDIO</small>
+      <a class="footer__to-top" href="#main">Back to top</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js" defer></script>
+</body>
+</html>

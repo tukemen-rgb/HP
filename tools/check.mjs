@@ -9,7 +9,7 @@
  * 「blocker」は公開前に必ず潰すもの、「warn」は判断が要るもの。
  */
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
-import { join, dirname, resolve } from "node:path";
+import { join, dirname, resolve, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -18,8 +18,27 @@ const findings = [];
 const add = (level, file, message, hint) =>
   findings.push({ level, file, message, hint });
 
-const html = (name) => readFileSync(join(ROOT, name), "utf8");
-const pages = readdirSync(ROOT).filter((f) => f.endsWith(".html")).sort();
+const raw = (name) => readFileSync(join(ROOT, name), "utf8");
+/** コメントは表示にも構造にも関わらないので、外してから見る（雛形の使い方メモなど） */
+const html = (name) => raw(name).replace(/<!--[\s\S]*?-->/g, "");
+
+/** ルート直下と、その下のディレクトリ（node_modules 等は除く）から HTML を集める */
+const SKIP_DIRS = new Set(["node_modules", ".git", ".preview", "tools"]);
+function collectPages(dir = ROOT) {
+  const out = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    if (entry.name.startsWith(".") && entry.name !== ".well-known") continue;
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      if (SKIP_DIRS.has(entry.name)) continue;
+      out.push(...collectPages(full));
+    } else if (entry.name.endsWith(".html")) {
+      out.push(relative(ROOT, full));
+    }
+  }
+  return out;
+}
+const pages = collectPages().sort();
 
 /* ---------- 1. 内部リンクと参照ファイルの存在 ---------- */
 for (const page of pages) {
@@ -27,9 +46,10 @@ for (const page of pages) {
   const refs = [...src.matchAll(/(?:href|src)="([^"#:]+?)"/g)].map((m) => m[1]);
   for (const ref of refs) {
     if (/^(https?:|mailto:|tel:|data:|\/\/)/.test(ref)) continue;
+    const base = ref.startsWith("/") ? ROOT : dirname(join(ROOT, page));
     const path = ref.startsWith("/") ? ref.slice(1) : ref;
     if (path === "" || path === "/") continue;
-    if (!existsSync(join(ROOT, path))) {
+    if (!existsSync(resolve(base, path))) {
       add("blocker", page, `参照先が存在しません: ${ref}`, "パスの綴りか、ファイルの置き場所を確認");
     }
   }
@@ -113,7 +133,7 @@ const BANNED = [
   ["感動を届け", "業界の定型句"],
 ];
 for (const page of pages) {
-  const src = html(page);
+  const src = raw(page); // コメントの中も対象にする
   for (const [word, why] of BANNED) {
     if (src.includes(word)) add("blocker", page, `「${word}」が含まれています（${why}）`);
   }
@@ -135,7 +155,29 @@ if (existsSync(join(ROOT, "sitemap.xml"))) {
   }
 }
 
-/* ---------- 8. 生成物の鮮度 ---------- */
+/* ---------- 8. 構造化データ（JSON-LD）---------- */
+for (const page of pages) {
+  const src = html(page);
+  const blocks = [...src.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+  for (const [, body] of blocks) {
+    let data;
+    try {
+      data = JSON.parse(body);
+    } catch (e) {
+      add("blocker", page, `JSON-LD が壊れています: ${e.message}`, "カンマ抜けか、値の中の引用符");
+      continue;
+    }
+    if (!data["@context"] || !data["@type"]) {
+      add("warn", page, "JSON-LD に @context / @type がありません");
+    }
+  }
+  // パンくずを出しているページには BreadcrumbList を持たせる
+  if (/class="breadcrumb"/.test(src) && !/"@type":\s*"BreadcrumbList"/.test(src)) {
+    add("warn", page, "パンくずはあるのに BreadcrumbList の構造化データがありません");
+  }
+}
+
+/* ---------- 9. 生成物の鮮度 ---------- */
 const ogImage = join(ROOT, "assets/img/og-image.png");
 const ogSource = join(ROOT, "tools/og-image.html");
 if (existsSync(ogImage) && existsSync(ogSource)) {
