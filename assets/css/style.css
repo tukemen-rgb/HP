@@ -348,15 +348,33 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: saturate(150%) blur(12px);
+  background: rgba(11, 59, 87, 0.92);
+  backdrop-filter: saturate(140%) blur(12px);
   border-bottom: 1px solid transparent;
   transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
 }
 
 .header.is-scrolled {
-  border-bottom-color: var(--line);
-  box-shadow: 0 1px 20px -12px rgba(11, 59, 87, 0.4);
+  background: rgba(11, 59, 87, 0.97);
+  border-bottom-color: rgba(234, 246, 250, 0.14);
+  box-shadow: 0 2px 24px -14px rgba(5, 32, 47, 0.8);
+}
+
+/* 紺背景のヘッダーに合わせて、ロゴとナビを反転させる */
+.header .logo {
+  color: var(--white);
+}
+
+.header .logo:hover {
+  color: var(--white);
+}
+
+.header .logo__wave {
+  stroke: var(--shine);
+}
+
+.header .logo__sub {
+  color: var(--gold);
 }
 
 .header__inner {
@@ -389,7 +407,11 @@ a:hover {
   font-weight: 400;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--deep);
+  color: var(--foam);
+}
+
+.nav__link:hover {
+  color: var(--white);
 }
 
 .nav__link::after {
@@ -399,7 +421,7 @@ a:hover {
   bottom: 0.15rem;
   width: 100%;
   height: 1px;
-  background: var(--gold-deep);
+  background: var(--gold);
   scale: 0 1;
   transform-origin: left;
   transition: scale 0.35s var(--ease);
@@ -411,7 +433,7 @@ a:hover {
 }
 
 .nav__link[aria-current="page"] {
-  color: var(--sea);
+  color: var(--gold);
 }
 
 .nav__ja {
@@ -420,8 +442,12 @@ a:hover {
   font-family: var(--font-ja);
   font-size: 0.62rem;
   letter-spacing: 0.1em;
-  color: var(--ink-soft);
+  color: rgba(234, 246, 250, 0.68);
   text-transform: none;
+}
+
+.nav__link[aria-current="page"] .nav__ja {
+  color: rgba(240, 200, 106, 0.85);
 }
 
 .nav-toggle {
@@ -441,7 +467,7 @@ a:hover {
   left: 11px;
   width: 22px;
   height: 1.5px;
-  background: var(--deep);
+  background: var(--foam);
   transition: translate 0.3s var(--ease), rotate 0.3s var(--ease), opacity 0.2s var(--ease);
 }
 
@@ -494,12 +520,13 @@ a:hover {
     z-index: 60;
   }
 
+  /* ドロワーもヘッダーと同じ紺。白のロゴがそのまま乗る */
   .nav {
     position: fixed;
     inset: 0;
     display: grid;
     place-items: center;
-    background: var(--white);
+    background: var(--deep);
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s var(--ease), visibility 0.3s var(--ease);

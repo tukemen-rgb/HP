@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="SIDRA STUDIO">
+  <title>SIDRA STUDIO — アプリアイコン</title>
+  <!-- 角丸なしの正方形。iOS / Android 側でマスクされるため、こちらでは丸めない -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#05202F"/>
+      <stop offset="0.6" stop-color="#0B3B57"/>
+      <stop offset="1" stop-color="#136A8C"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#sky)"/>
+  <!-- 一番星 -->
+  <circle cx="256" cy="186" r="46" fill="#F0C86A"/>
+  <!-- まわりの星 -->
+  <circle cx="378" cy="118" r="11" fill="#EAF6FA" opacity="0.65"/>
+  <circle cx="140" cy="140" r="8" fill="#EAF6FA" opacity="0.5"/>
+  <!-- 星々が並ぶ場所 -->
+  <path d="M78 336 C 134 310, 190 340, 246 352 C 302 364, 358 334, 414 320"
+        fill="none" stroke="#35B0C9" stroke-width="34" stroke-linecap="round"/>
+  <path d="M78 420 C 134 398, 190 424, 246 432 C 302 440, 358 414, 414 402"
+        fill="none" stroke="#1C7FA0" stroke-width="22" stroke-linecap="round" opacity="0.7"/>
+</svg>
