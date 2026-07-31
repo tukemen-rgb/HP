@@ -168,11 +168,17 @@ var ENDPOINT = "https://formspree.io/f/xxxxxxxx"; // ここに発行された UR
 
 ### OG画像の再生成
 
-`tools/og-image.html` を 1200×630 で撮影したものが `assets/img/og-image.png` です。
+`tools/og-image.html` を 1200×630 で撮影したものが OG画像です。
 
 ```bash
-npx playwright screenshot --viewport-size=1200,630 tools/og-image.html assets/img/og-image.png
+npm run build:og
 ```
+
+- `assets/img/og-image.jpg` … 共通版（トップ・404・お知らせ詳細）
+- `assets/img/og/<ページ名>.jpg` … ページ別（ロゴの上にページ名が入るだけの違い）
+
+ページ名は `tools/build-og.mjs` の `PAGES` に並んでいます。
+文言や色を変えたいときは `tools/og-image.html` を直してから再生成してください。
 
 ---
 

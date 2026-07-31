@@ -178,11 +178,20 @@ for (const page of pages) {
 }
 
 /* ---------- 9. 生成物の鮮度 ---------- */
-const ogImage = join(ROOT, "assets/img/og-image.png");
 const ogSource = join(ROOT, "tools/og-image.html");
-if (existsSync(ogImage) && existsSync(ogSource)) {
-  if (statSync(ogSource).mtimeMs > statSync(ogImage).mtimeMs) {
-    add("warn", "assets/img/og-image.png", "元データより古いままです", "npm run build:og で再生成");
+if (existsSync(ogSource)) {
+  const built = ["assets/img/og-image.jpg"];
+  const ogDir = join(ROOT, "assets/img/og");
+  if (existsSync(ogDir)) {
+    for (const f of readdirSync(ogDir)) built.push(`assets/img/og/${f}`);
+  }
+  for (const rel of built) {
+    const abs = join(ROOT, rel);
+    if (!existsSync(abs)) {
+      add("warn", rel, "生成されていません", "npm run build:og で生成");
+    } else if (statSync(ogSource).mtimeMs > statSync(abs).mtimeMs) {
+      add("warn", rel, "元データより古いままです", "npm run build:og で再生成");
+    }
   }
 }
 
