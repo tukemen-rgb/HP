@@ -17,10 +17,7 @@
 
 ## 未着手
 
-- [ ] **ホスティング設定のひな形**
-  Cloudflare Pages / Netlify / Apache 向けのセキュリティヘッダ設定
-  （`_headers`、`netlify.toml`、`.htaccess`）をコメント付きで用意する。
-  適用は公開先が決まってから。
+（なし。2026-07-31 に一巡しました）
 
 ## 完了
 
@@ -43,6 +40,13 @@
       `news/_template.html` を追加。Cygames のお知らせ（日付 YYYY.MM.DD ＋
       タイトル、詳細ページは別 URL）の作りを参考にした。
       検証スクリプトはサブディレクトリも見るように変更
+- [x] ホスティング設定のひな形（2026-07-31）
+      `docs/hosting/` に `_headers` / `netlify.toml` / `.htaccess` を用意。
+      直下に置くと即座に効いてしまうので、公開先が決まってからコピーする形にした。
+      CSP は実際にページへ当てて違反が出ないことを確認済み
+      （Google Fonts を実際に読み込ませた状態でも違反なし）。
+      他社は任天堂が nosniff と HSTS を入れている程度で、
+      グッドラックスリー・Q-Games はほぼ無設定だった
 - [x] sitemap の lastmod 自動更新（2026-07-31）
       `tools/build-sitemap.mjs` を追加し、`npm run verify` の最初に走らせる。
       lastmod は git の最終変更日、URL は canonical から取る。
@@ -50,9 +54,12 @@
       プライバシーポリシーを検索対象にしている）
 - [x] 表示速度の調整（2026-07-31）
       Google Fonts の CSS が描画を止めていた。届かない環境での実測で
-      本文が出るまで 13 秒。preload ＋ media="print" onload に変えて 0.24 秒に。
+      本文が出るまで 13 秒。preload ＋ media="print" に変えて 0.24 秒に。
+      切り替えは main.js 側で行う（HTML に onload を書かずに済み、
+      CSP を script-src 'self' のままにできる）。
       同じことが起きないよう、外部を遅らせた状態での描画時間の確認を
-      `npm run visual` に追加。ブランド素材の画像は遅延読み込みに
+      `npm run visual` に追加。ブランド素材の画像は遅延読み込みに。
+      フォント差し替え時の CLS は実測 0.0026 で、対策は不要だった
 - [x] アクセシビリティの実測（2026-07-31）
       `tools/visual.mjs` でコントラスト比を実測できるようにし、13箇所の不足を修正。
       ブランドの色は変えず、明るい背景に文字を置くとき用の

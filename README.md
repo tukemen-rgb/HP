@@ -156,6 +156,16 @@ var ENDPOINT = "https://formspree.io/f/xxxxxxxx"; // ここに発行された UR
 **レンタルサーバー**
 リポジトリの中身をそのまま FTP でアップロードします。
 
+### セキュリティヘッダー
+
+`docs/hosting/` に `_headers`（Cloudflare Pages / Netlify）、`netlify.toml`、
+`.htaccess`（Apache）のひな形があります。**公開先が決まってから**
+該当するものをリポジトリ直下にコピーしてください。置いた時点で効きます。
+
+`Strict-Transport-Security` は一度送るとブラウザが期間中おぼえて取り消せないので、
+HTTPS が問題なく動くのを確認してからコメントを外します。
+詳細は `docs/hosting/README.md` にまとめています。
+
 ---
 
 ## デザインの前提

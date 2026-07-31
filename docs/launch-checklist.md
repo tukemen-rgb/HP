@@ -66,6 +66,12 @@ npm run check   # 「仮ドメイン」の指摘が消えることを確認
 - [ ] デプロイ設定（ビルド不要、公開ディレクトリはリポジトリ直下）
 - [ ] HTTPS の有効化
 - [ ] 独自ドメインの割り当て
+- [ ] `docs/hosting/` の該当ファイルをリポジトリ直下にコピーする
+      （Cloudflare Pages / Netlify → `_headers`、Apache → `.htaccess`。
+      GitHub Pages はヘッダーを設定できないので対象外）
+- [ ] HTTPS が問題なく動くのを確認してから、`Strict-Transport-Security` の
+      コメントを外す（一度送ると期間中は取り消せません）
+- [ ] 公開後、開発者ツールのコンソールに CSP の警告が出ていないか全ページで確認
 
 ## 7. 公開直前の最終確認
 

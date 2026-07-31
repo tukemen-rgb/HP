@@ -1,0 +1,31 @@
+# Cloudflare Pages / Netlify 用。リポジトリ直下にコピーして使う。
+# 詳細と注意点は docs/hosting/README.md を参照。
+
+/*
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self'; manifest-src 'self'; upgrade-insecure-requests
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+# HTTPS が問題なく動くのを確認してから、次の行のコメントを外す（取り消せません）
+#  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# フォームの送信先を設定したら、その配信元を connect-src に足す。例：
+#  Content-Security-Policy: … connect-src 'self' https://formspree.io; …
+
+# 中身が変わったらファイル名も変える運用ではないので、
+# HTML は毎回確認させ、画像とアイコンだけ長く保持させる
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/css/*
+  Cache-Control: public, max-age=3600
+
+/assets/js/*
+  Cache-Control: public, max-age=3600
+
+/assets/img/*
+  Cache-Control: public, max-age=604800
+
+/favicon.ico
+  Cache-Control: public, max-age=604800

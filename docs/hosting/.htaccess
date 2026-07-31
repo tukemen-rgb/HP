@@ -1,0 +1,40 @@
+# Apache（レンタルサーバー）用。公開ディレクトリ直下にコピーして使う。
+# 詳細と注意点は docs/hosting/README.md を参照。
+#
+# mod_headers / mod_deflate / mod_expires が有効でない環境では、
+# その <IfModule> の中がまるごと無視されます（エラーにはなりません）。
+
+<IfModule mod_headers.c>
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self'; manifest-src 'self'; upgrade-insecure-requests"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+
+  # HTTPS が問題なく動くのを確認してから、次の行のコメントを外す（取り消せません）
+  # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(svg|png|ico|jpg|webp)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
+
+# 拡張子だけでは判別されない形式を明示する
+<IfModule mod_mime.c>
+  AddType image/svg+xml .svg
+  AddType application/manifest+json .webmanifest
+  AddType image/x-icon .ico
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript image/svg+xml application/manifest+json application/xml
+</IfModule>
+
+# 404 をサイトのページで出す（サーバーの既定画面ではなく）
+ErrorDocument 404 /404.html
+
+# ディレクトリの中身を一覧表示させない
+Options -Indexes

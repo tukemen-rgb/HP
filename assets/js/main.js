@@ -2,6 +2,15 @@
 (function () {
   "use strict";
 
+  /* ---- 0. Webフォントの適用 ----
+     head では media="print" にして描画を止めないようにしてある。
+     読み込みは先に始まっているので、ここで全メディアに切り替えるだけ。
+     HTML 側に onload を書かずに済むので、Content-Security-Policy を
+     script-src 'self' のまま運用できる。 */
+  Array.prototype.forEach.call(document.querySelectorAll("link[data-webfont]"), function (link) {
+    link.media = "all";
+  });
+
   /* ---- 1. モバイルナビゲーション ---- */
   var toggle = document.querySelector(".nav-toggle");
   var nav = document.getElementById("global-nav");
