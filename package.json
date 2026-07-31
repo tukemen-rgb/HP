@@ -1,0 +1,19 @@
+{
+  "name": "sidra-studio-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SIDRA STUDIO 企業サイト（ビルド不要の静的サイト）",
+  "type": "module",
+  "scripts": {
+    "check": "node tools/check.mjs",
+    "check:json": "node tools/check.mjs --json",
+    "visual": "node tools/visual.mjs",
+    "shots": "node tools/visual.mjs --shots",
+    "build:og": "node tools/build-og.mjs",
+    "verify": "npm run check && npm run visual",
+    "serve": "npx --yes serve . -l 4173"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0"
+  }
+}
