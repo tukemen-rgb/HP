@@ -176,6 +176,24 @@ var ENDPOINT = "https://formspree.io/f/xxxxxxxx"; // ここに発行された UR
   （`assets/img/logo-onlight.svg` / `logo-ondark.svg` は外部提供用の書き出し）
 - 動きは `prefers-reduced-motion` に対応（設定が有効な環境ではアニメーションを止めます）
 
+### 表示速度
+
+Webフォント（Google Fonts）は描画を止めない形で読み込んでいます。
+
+```html
+<link rel="preload" as="style" href="…">
+<link rel="stylesheet" href="…" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="…"></noscript>
+```
+
+普通の `<link rel="stylesheet">` にすると、Google Fonts の応答が返るまで
+ページが真っ白のままになります（届かない環境での実測で 13 秒）。
+上の形なら本文は 0.2 秒ほどで出て、フォントは届いた時点で差し替わります。
+
+`npm run visual` の最後で、外部の応答を 5 秒遅らせた状態でも
+本文が 1.5 秒以内に描画されるかを確認しています。
+描画を止める外部リソースを足すと、ここで引っかかります。
+
 ### アクセシビリティ
 
 `npm run visual` が、全ページ・320 / 768 / 1440px の3つの幅と、

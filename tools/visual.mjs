@@ -259,6 +259,40 @@ for (const page of pages) {
   await ctx.close();
 }
 
+/* 外部（Webフォントなど）が遅いときでも、本文の描画がそれを待たないか。
+   Google Fonts の CSS を普通の <link rel="stylesheet"> で読むと、
+   その応答が返るまでページが真っ白になる。実測で 13 秒待たされたことがある */
+{
+  const SLOW = 5000; // 外部の応答をこれだけ遅らせる
+  const LIMIT = 1500; // 本文はこの時間までに出てほしい
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  await ctx.route("**://**", async (route) => {
+    if (/^(file|data|blob):/.test(route.request().url())) return route.continue();
+    await new Promise((r) => setTimeout(r, SLOW));
+    return route.abort();
+  });
+  const p = await ctx.newPage();
+  await p.goto(pathToFileURL(join(ROOT, "index.html")).href, { waitUntil: "commit" });
+  const fcp = await p.evaluate(
+    (limit) =>
+      new Promise((res) => {
+        const done = (v) => res(v);
+        new PerformanceObserver((list, obs) => {
+          const e = list.getEntriesByName("first-contentful-paint")[0];
+          if (e) { obs.disconnect(); done(Math.round(e.startTime)); }
+        }).observe({ type: "paint", buffered: true });
+        setTimeout(() => done(null), limit + 1500);
+      }),
+    LIMIT
+  );
+  if (fcp === null || fcp > LIMIT) {
+    const how = fcp === null ? `${LIMIT + 1500}ms 経っても描画されません` : `描画まで ${fcp}ms かかります`;
+    note("index.html", `外部の応答が遅いとき、${how}`
+      + `（${LIMIT}ms 以内が目安。描画を止める外部リソースが増えていないか確認）`);
+  }
+  await ctx.close();
+}
+
 await browser.close();
 
 console.log(`\n表示チェック — ${pages.length} ページ × ${WIDTHS.join(" / ")}px\n`);
