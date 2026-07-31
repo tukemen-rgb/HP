@@ -13,11 +13,11 @@
   </defs>
   <rect width="1024" height="1024" fill="url(#sea)"/>
   <rect width="1024" height="1024" fill="url(#sun)"/>
-  <!-- いるか座＝導きの星 -->
+  <!-- 一番星と、まわりの星々 -->
   <circle cx="512" cy="316" r="34" fill="#F0C86A"/>
   <circle cx="672" cy="212" r="9" fill="#EAF6FA" opacity="0.7"/>
   <circle cx="356" cy="250" r="7" fill="#EAF6FA" opacity="0.55"/>
-  <!-- 穏やかに輝く海 -->
+  <!-- 星々が並ぶ場所 -->
   <path d="M132 596 C 244 548, 356 604, 468 624 C 580 644, 692 588, 804 566 C 848 557, 872 556, 892 558"
         fill="none" stroke="#35B0C9" stroke-width="38" stroke-linecap="round"/>
   <path d="M132 728 C 244 686, 356 738, 468 754 C 580 770, 692 720, 804 700"

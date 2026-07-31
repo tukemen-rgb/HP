@@ -2,8 +2,8 @@
 /* ============================================================
    SIDRA STUDIO — corporate site stylesheet
    Palette / motifs are derived from the brand guideline:
-     深い海 #0B3B57 / 海 #1C7FA0 / 陽に輝く海 #35B0C9
-     陽光・星 #F0C86A (#E0A93F) / 波の泡 #EAF6FA
+     深い夜空 #0B3B57 / 夜明けの空 #1C7FA0 / 明けの光 #35B0C9
+     星の光 #F0C86A (#E0A93F) / 星あかり #EAF6FA
    ============================================================ */
 
 /* ---------- 1. Tokens ---------- */
@@ -287,7 +287,7 @@ a:hover {
   position: relative;
 }
 
-/* 「I」の上の一番星（いるか座＝導きの星） */
+/* 「I」の上の一番星（最初に灯った光） */
 .logo__i::after {
   content: "";
   position: absolute;
@@ -686,7 +686,7 @@ a:hover {
   }
 }
 
-/* いるか座（デルフィヌス）— サラキアを導いたイルカ */
+/* 星々の装飾（それぞれのクリエイターの光） */
 .hero__delphinus {
   position: absolute;
   z-index: -2;
