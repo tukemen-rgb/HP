@@ -10,7 +10,8 @@
     "visual": "node tools/visual.mjs",
     "shots": "node tools/visual.mjs --shots",
     "build:og": "node tools/build-og.mjs",
-    "verify": "npm run check && npm run visual",
+    "build:sitemap": "node tools/build-sitemap.mjs",
+    "verify": "npm run build:sitemap && npm run check && npm run visual",
     "serve": "npx --yes serve . -l 4173"
   },
   "devDependencies": {

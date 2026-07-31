@@ -8,11 +8,10 @@
   2. 【 】で囲んだ箇所をすべて書き換える
   3. <meta name="robots" content="noindex,nofollow"> の行を消す
      （この雛形自体は検索結果に出したくないので付けている）
-  4. sitemap.xml に <url><loc>…</loc></url> を1件足す
-  5. news.html の一覧に1件足す。詳細ページがある記事は
+  4. news.html の一覧に1件足す。詳細ページがある記事は
      <div class="news-item"> を <a class="news-item" href="news/ファイル名.html"> に
      変える（閉じタグも </a> に）。リンクの見た目は CSS 側に用意済み
-  6. npm run verify を通す
+  5. npm run verify を通す（sitemap.xml はここで自動的に追加される）
 
   この雛形は noindex なので、公開ページとしては数えられない。
 -->

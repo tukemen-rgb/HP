@@ -17,10 +17,6 @@
 
 ## 未着手
 
-- [ ] **sitemap の lastmod 自動更新**
-  各 HTML の更新日時から `sitemap.xml` の `lastmod` を書き換えるスクリプトを追加し、
-  `npm run verify` に組み込む。
-
 - [ ] **ホスティング設定のひな形**
   Cloudflare Pages / Netlify / Apache 向けのセキュリティヘッダ設定
   （`_headers`、`netlify.toml`、`.htaccess`）をコメント付きで用意する。
@@ -47,6 +43,11 @@
       `news/_template.html` を追加。Cygames のお知らせ（日付 YYYY.MM.DD ＋
       タイトル、詳細ページは別 URL）の作りを参考にした。
       検証スクリプトはサブディレクトリも見るように変更
+- [x] sitemap の lastmod 自動更新（2026-07-31）
+      `tools/build-sitemap.mjs` を追加し、`npm run verify` の最初に走らせる。
+      lastmod は git の最終変更日、URL は canonical から取る。
+      あわせて privacy.html の noindex を外した（Q-Games など他社は
+      プライバシーポリシーを検索対象にしている）
 - [x] 表示速度の調整（2026-07-31）
       Google Fonts の CSS が描画を止めていた。届かない環境での実測で
       本文が出るまで 13 秒。preload ＋ media="print" onload に変えて 0.24 秒に。
