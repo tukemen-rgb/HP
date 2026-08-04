@@ -27,7 +27,8 @@
 - **会社（SIDRA STUDIO）** … Purpose / Vision / Values
   トップページと `about.html` の代表メッセージに掲載
 - **サービス（GAMEYARD）** … Mission / Vision / Core Value
-  `about.html#gameyard` に掲載
+  トップページの GAMEYARD セクションと `about.html#gameyard` に掲載。
+  トップは3つの宣言だけ、`about.html` に「目指す世界」と「育てたいもの」を置いています
 
 会社側は「つくる人が力を出しきれる環境をつくる」、
 サービス側は「創造する人が育ち、その人がまた次を育てる」。
