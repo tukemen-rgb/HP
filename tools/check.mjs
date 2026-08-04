@@ -130,8 +130,9 @@ const BANNED = [
   ["SALACIA", "旧社名"],
   ["いるか座", "旧ブランドのモチーフ"],
   ["ソリューション", "業界の定型句"],
-  ["感動を届け", "業界の定型句"],
 ];
+// 「感動を届ける」は定型句として禁止していたが、GAMEYARD の Core Value
+// （ユーザーに対して、今までにない感動を届ける）そのものなので外した。
 for (const page of pages) {
   const src = raw(page); // コメントの中も対象にする
   for (const [word, why] of BANNED) {

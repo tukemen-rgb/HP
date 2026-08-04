@@ -179,6 +179,15 @@ a:hover {
   color: var(--white);
 }
 
+/* 濃紺の上ではリンクの藍色が沈むので金にする（本文リンクで 1.97:1 → 7.41:1） */
+.section--deep a {
+  color: var(--gold);
+}
+
+.section--deep a:hover {
+  color: var(--white);
+}
+
 .skip-link {
   position: absolute;
   left: 50%;
