@@ -1416,6 +1416,12 @@ a.news-item:hover {
   border-bottom-color: rgba(234, 246, 250, 0.16);
 }
 
+/* 直後に .pv-block が来ると罫線が二重になるので、最後の1本を消す */
+.motifs:has(+ .pv-block) li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
 .section--deep .motifs b {
   color: var(--gold);
 }
