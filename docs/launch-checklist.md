@@ -133,6 +133,14 @@ npm run verify                                 # 「仮ドメイン」の指摘�
 - 使わないと決めた語（革新／こだわり／運営人数に触れる表現／旧ブランド語）
 - `sitemap.xml` と実ページの対応
 - OG画像が元データより古くなっていないか
+- ページ内アンカー（`about.html#gameyard` など）の参照先が実在するか
+- JSON-LD が壊れていないか、パンくずのあるページに BreadcrumbList があるか
+- 英語だけの表示要素に `lang="en"` があるか
+- `site.webmanifest` の icons の実在・start_url・theme_color の整合
+- フッターの年号が今年か
+
+`npm run validate` … html-validate（HTML の構造・属性）
+`npm run lint:css` … stylelint（無効な値・重複セレクタ・非推奨プロパティ）
 
 `npm run visual`
 

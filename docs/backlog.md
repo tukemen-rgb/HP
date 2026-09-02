@@ -17,32 +17,43 @@
 
 ## 未着手
 
-- [ ] **使われていない CSS の洗い出し**
-  HTML と JS のどこからも参照されていないクラスを `tools/` のスクリプトで列挙し、消す。
-  JS が付けるクラス（js / is-visible / is-open / is-scrolled / is-nav-open）は除外。
-  何度も書き換えてきたので、旧ブランド由来の残骸が混ざっているはず。
+- [ ] **お知らせを1コマンドで追加する `tools/new-post.mjs`**
+  `npm run new:post -- 2026-09-10 "見出し" --slug first-title --tag Studio` で、
+  雛形から詳細ページを作り、noindex を外し、news.html と index.html の一覧に
+  リンク付きの1行を足す。スマホからでも記事を出せるように、手順を1つにする。
+  雛形の【 】が残っていたら check.mjs が止めることも確認する。
 
-- [ ] **stylelint の導入**
-  html-validate と同じ位置づけ。無効なプロパティ・重複セレクタ・誤字を機械で洗う。
-  `npm run verify` に組み込む。
+- [ ] **GitHub Actions で `npm run verify` を回す**
+  push と pull request のたびに、この環境と同じ検証が GitHub 側で走るようにする。
+  Playwright のブラウザは `npx playwright install --with-deps chromium`。
+  失敗したら赤くなるだけで、公開や外部送信は一切しない。
 
-- [ ] **英語だけの要素に `lang="en"`**
-  `.en` の英字キャプションや eyebrow の "Culture" などは、読み上げ環境で日本語として
-  発音されてしまう。中身が英数字だけの要素に `lang="en"` を付けるスクリプトを書き、
-  今後の追加分は check.mjs で警告する。
+- [ ] **検証スクリプト自身の自己テスト `tools/selftest.mjs`**
+  一時ディレクトリにサイトを複製して既知の欠陥を仕込み（アンカー切れ、禁止語、
+  壊れた JSON-LD、alt 抜け、雛形の【 】残り）、check.mjs がそれぞれを検出することを確認する。
+  チェックを改修したときに、検出力が落ちていないかを機械で見る。
 
-- [ ] **スキップリンクの着地先にフォーカスが移るか**
-  `#main` に `tabindex="-1"` がないと、一部のブラウザでスキップ後のフォーカスが動かない。
-  確認して直し、`tools/visual.mjs` で「スキップ→Tab で本文の最初のリンクに行く」ことを見る。
-
-- [ ] **site.webmanifest の整合チェック**
-  `icons` の参照先が実在するか、`theme_color` が各ページの `<meta name="theme-color">` と
-  同じか、`start_url` が `/` かを `tools/check.mjs` で確認する。
-
-- [ ] **`.htaccess` に Atom の MIME を追加**
-  `feed.xml` を `application/atom+xml` で返すよう `docs/hosting/.htaccess` に `AddType`。
+- [ ] **404 ページに主要ページへの導線**
+  いまはトップへ戻るだけ。About / GAMEYARD / Works / News / Contact への
+  リンクを並べて、迷った人がそこから進めるようにする。
 
 ## 完了
+
+- [x] 使われていない CSS の洗い出し（2026-09-02）
+      `tools/audit-css.mjs`（npm run audit:css）。132 クラス中 4 つが旧ブランドの残骸
+      （.card__icon / .accent / .figure-sea / .hero__mark）だったので削除
+- [x] stylelint の導入（2026-09-02）
+      標準設定のうち、書き方の好みに関するルール（BEM の命名、rgba 表記など）は外し、
+      実害のあるものだけ残した。初回で本物の不具合が1件：印刷用の padding-block が
+      3値で書かれていて宣言ごと無視されていた。重複セレクタ2組も統合。verify に組み込み
+- [x] 英語だけの要素に lang="en"（2026-09-02）
+      70 箇所に付与。今後の追加分は check.mjs が警告する
+- [x] スキップリンクの着地先（2026-09-02）
+      全ページの #main に tabindex="-1"。visual.mjs で「Tab → Enter → 本文にフォーカス →
+      次の Tab は本文内」を確認
+- [x] site.webmanifest の整合チェック（2026-09-02）
+      icons の実在、start_url、theme_color とページの theme-color の一致を check.mjs で
+- [x] .htaccess に Atom の MIME（2026-09-02）
 
 - [x] ページ内アンカーの実在チェック（2026-09-02）
       `about.html#gameyard` の id を消すと検出されることを確認。同じ指摘は1件にまとめる

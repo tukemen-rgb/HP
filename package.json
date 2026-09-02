@@ -8,17 +8,21 @@
     "check": "node tools/check.mjs",
     "check:json": "node tools/check.mjs --json",
     "validate": "html-validate *.html news/*.html",
+    "lint:css": "stylelint assets/css/style.css",
+    "audit:css": "node tools/audit-css.mjs",
     "visual": "node tools/visual.mjs",
     "shots": "node tools/visual.mjs --shots",
     "build:og": "node tools/build-og.mjs",
     "build:sitemap": "node tools/build-sitemap.mjs",
     "build:feed": "node tools/build-feed.mjs",
     "set-domain": "node tools/set-domain.mjs",
-    "verify": "npm run build:sitemap && npm run build:feed && npm run check && npm run validate && npm run visual",
+    "verify": "npm run build:sitemap && npm run build:feed && npm run check && npm run validate && npm run lint:css && npm run visual",
     "serve": "npx --yes serve . -l 4173"
   },
   "devDependencies": {
     "html-validate": "^11.12.0",
-    "playwright": "^1.49.0"
+    "playwright": "^1.49.0",
+    "stylelint": "^17.14.1",
+    "stylelint-config-standard": "^40.0.0"
   }
 }

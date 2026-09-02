@@ -164,6 +164,51 @@ for (const page of [...pages, "assets/js/contact.js", "robots.txt", "sitemap.xml
   }
 }
 
+/* ---------- 5-b2. 英語だけの表示要素に lang="en" があるか ----------
+   .en の英字キャプションや eyebrow は、lang がないと読み上げ環境で日本語として発音される */
+{
+  const EN_CLASSES = ["en", "eyebrow", "hero__eyebrow", "work__status", "work__visual-label", "footer__to-top", "news-item__tag"];
+  const cls = EN_CLASSES.map((c) => c.replace(/[-]/g, "\\-")).join("|");
+  const re = new RegExp(`<(\\w+)([^>]*\\bclass="[^"]*\\b(?:${cls})\\b[^"]*"[^>]*)>([^<]*)</\\1>`, "g");
+  for (const page of pages) {
+    const src = html(page);
+    for (const m of src.matchAll(re)) {
+      const [, , attrs, inner] = m;
+      const text = inner.trim();
+      if (!text || /lang=/.test(attrs)) continue;
+      if ([...text].every((ch) => ch.charCodeAt(0) < 128)) {
+        add("warn", page, `英語だけの表示要素に lang="en" がありません: 「${text.slice(0, 20)}」`, "class に en / eyebrow などを持つ要素は lang=\"en\" を付ける");
+      }
+    }
+  }
+}
+
+/* ---------- 5-c. site.webmanifest の整合 ---------- */
+if (existsSync(join(ROOT, "site.webmanifest"))) {
+  let manifest = null;
+  try {
+    manifest = JSON.parse(raw("site.webmanifest"));
+  } catch (e) {
+    add("blocker", "site.webmanifest", `JSON が壊れています: ${e.message}`);
+  }
+  if (manifest) {
+    for (const icon of manifest.icons || []) {
+      const rel = String(icon.src || "").replace(/^\//, "");
+      if (!existsSync(join(ROOT, rel))) add("blocker", "site.webmanifest", `icons の参照先がありません: ${icon.src}`);
+    }
+    if (manifest.start_url !== "/") add("warn", "site.webmanifest", `start_url が "/" ではありません（${manifest.start_url}）`);
+    const themes = new Set();
+    for (const page of pages) {
+      const m = html(page).match(/<meta name="theme-color" content="([^"]+)"/);
+      if (m) themes.add(m[1].toLowerCase());
+    }
+    const mt = String(manifest.theme_color || "").toLowerCase();
+    if (mt && themes.size && !themes.has(mt)) {
+      add("warn", "site.webmanifest", `theme_color（${manifest.theme_color}）がページの theme-color（${[...themes].join(", ")}）と違います`);
+    }
+  }
+}
+
 /* ---------- 6. 使わないと決めた語 ---------- */
 const BANNED = [
   ["革新", "使用しないと決めた語"],

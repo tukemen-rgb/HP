@@ -350,6 +350,36 @@ for (const page of pages) {
   await ctx.close();
 }
 
+/* スキップリンクで本文に飛べるか。
+   #main に tabindex="-1" がないと、一部のブラウザでフォーカスが動かず、
+   次の Tab がヘッダーのナビに戻ってしまう。 */
+{
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  await ctx.route("**://**", (route) =>
+    /^(file|data|blob):/.test(route.request().url()) ? route.continue() : route.abort()
+  );
+  const p = await ctx.newPage();
+  await p.goto(pathToFileURL(join(ROOT, "index.html")).href, { waitUntil: "domcontentloaded" });
+  await p.waitForTimeout(300);
+  await p.keyboard.press("Tab"); // 最初の Tab でスキップリンク
+  const onSkip = await p.evaluate(() => document.activeElement.classList.contains("skip-link"));
+  if (!onSkip) {
+    note("index.html", "最初の Tab がスキップリンクに当たりません");
+  } else {
+    await p.keyboard.press("Enter");
+    await p.waitForTimeout(300);
+    const landed = await p.evaluate(() => document.activeElement.id === "main");
+    if (!landed) note("index.html", "スキップリンクを押しても本文（#main）にフォーカスが移りません");
+    await p.keyboard.press("Tab");
+    const next = await p.evaluate(() => {
+      const a = document.activeElement;
+      return { inMain: !!a.closest("main"), text: (a.textContent || "").trim().slice(0, 12) };
+    });
+    if (!next.inMain) note("index.html", `スキップ後の Tab が本文の外（「${next.text}」）へ行きます`);
+  }
+  await ctx.close();
+}
+
 /* お問い合わせフォームが実際に動くか。
    未入力の送信はブラウザの検証で止まること、入力後の送信では
    選んだ用件と本文が mailto: に組み込まれることを見る。
