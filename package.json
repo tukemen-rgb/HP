@@ -7,15 +7,17 @@
   "scripts": {
     "check": "node tools/check.mjs",
     "check:json": "node tools/check.mjs --json",
+    "validate": "html-validate *.html news/*.html",
     "visual": "node tools/visual.mjs",
     "shots": "node tools/visual.mjs --shots",
     "build:og": "node tools/build-og.mjs",
     "build:sitemap": "node tools/build-sitemap.mjs",
     "set-domain": "node tools/set-domain.mjs",
-    "verify": "npm run build:sitemap && npm run check && npm run visual",
+    "verify": "npm run build:sitemap && npm run check && npm run validate && npm run visual",
     "serve": "npx --yes serve . -l 4173"
   },
   "devDependencies": {
+    "html-validate": "^11.12.0",
     "playwright": "^1.49.0"
   }
 }

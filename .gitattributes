@@ -1,0 +1,12 @@
+# テキストは LF で統一（Windows でも CRLF に変換しない）
+* text=auto eol=lf
+
+# 生成物・バイナリは差分を取らない
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+
+# SVG はテキストとして扱う（差分が読める）
+*.svg text eol=lf

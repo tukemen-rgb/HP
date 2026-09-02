@@ -1,5 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="SIDRA STUDIO">
-  <rect width="64" height="64" rx="13" fill="#0B3B57"/>
+  <style>
+    /* 暗いタブバーでは紺の角丸が背景に沈むので、縁に薄い光を足す。
+       明るいタブバーでは何もしない（紺だけで十分に見える） */
+    .rim { stroke: none; }
+    @media (prefers-color-scheme: dark) {
+      .rim { stroke: rgba(234, 246, 250, 0.28); stroke-width: 2; }
+    }
+  </style>
+  <rect class="rim" x="1" y="1" width="62" height="62" rx="12" fill="#0B3B57"/>
   <circle cx="32" cy="21" r="6" fill="#F0C86A"/>
   <path d="M10 42 C 17 37, 24 41, 32 43 C 40 45, 47 39, 54 37"
         fill="none" stroke="#35B0C9" stroke-width="6" stroke-linecap="round"/>

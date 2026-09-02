@@ -34,12 +34,16 @@ const PAGES = [
   { file: "privacy", label: "Privacy", ja: "プライバシーポリシー" },
 ];
 
+/* この環境ではブラウザ本体が /opt/pw-browsers に用意されていて、
+   それに合う playwright はグローバル側にある。npm install で入った
+   ローカルの playwright は版が違いブラウザが見つからないので、先にグローバルを試す。
+   グローバルがない環境（普通の開発機）ではローカルに落ちる。 */
 let chromium;
 try {
-  ({ chromium } = await import("playwright"));
+  ({ chromium } = await import("/opt/node22/lib/node_modules/playwright/index.mjs"));
 } catch {
   try {
-    ({ chromium } = await import("/opt/node22/lib/node_modules/playwright/index.mjs"));
+    ({ chromium } = await import("playwright"));
   } catch {
     console.error("playwright が見つかりません。`npm i -D playwright` のあと `npx playwright install chromium` を実行してください。");
     process.exit(2);
