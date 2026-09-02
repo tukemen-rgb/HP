@@ -17,11 +17,42 @@
 
 ## 未着手
 
-- [ ] **お問い合わせフォームの動作を自動チェックに追加**
-  未入力送信でブラウザ検証が働くこと、入力後の送信で mailto: が組み立てられることを
-  `tools/visual.mjs` で確認する。
+- [ ] **使われていない CSS の洗い出し**
+  HTML と JS のどこからも参照されていないクラスを `tools/` のスクリプトで列挙し、消す。
+  JS が付けるクラス（js / is-visible / is-open / is-scrolled / is-nav-open）は除外。
+  何度も書き換えてきたので、旧ブランド由来の残骸が混ざっているはず。
+
+- [ ] **stylelint の導入**
+  html-validate と同じ位置づけ。無効なプロパティ・重複セレクタ・誤字を機械で洗う。
+  `npm run verify` に組み込む。
+
+- [ ] **英語だけの要素に `lang="en"`**
+  `.en` の英字キャプションや eyebrow の "Culture" などは、読み上げ環境で日本語として
+  発音されてしまう。中身が英数字だけの要素に `lang="en"` を付けるスクリプトを書き、
+  今後の追加分は check.mjs で警告する。
+
+- [ ] **スキップリンクの着地先にフォーカスが移るか**
+  `#main` に `tabindex="-1"` がないと、一部のブラウザでスキップ後のフォーカスが動かない。
+  確認して直し、`tools/visual.mjs` で「スキップ→Tab で本文の最初のリンクに行く」ことを見る。
+
+- [ ] **site.webmanifest の整合チェック**
+  `icons` の参照先が実在するか、`theme_color` が各ページの `<meta name="theme-color">` と
+  同じか、`start_url` が `/` かを `tools/check.mjs` で確認する。
+
+- [ ] **`.htaccess` に Atom の MIME を追加**
+  `feed.xml` を `application/atom+xml` で返すよう `docs/hosting/.htaccess` に `AddType`。
 
 ## 完了
+
+- [x] ページ内アンカーの実在チェック（2026-09-02）
+      `about.html#gameyard` の id を消すと検出されることを確認。同じ指摘は1件にまとめる
+- [x] お知らせの Atom フィード（2026-09-02）
+      `tools/build-feed.mjs` が news.html から feed.xml を組み立て、verify の最初に走る。
+      全ページに `<link rel="alternate">` を追加
+- [x] フッターの年号の鮮度チェック（2026-09-02）
+- [x] お問い合わせフォームの自動チェック（2026-09-02）
+      未入力送信が required で止まること、入力後の送信で用件・名前・本文が
+      mailto: に組み込まれることを確認。encodeURIComponent を差し替えて中身を記録
 
 - [x] ファビコンのダークモード対応（2026-09-02）
       暗いタブバーで紺の角丸が沈むので、prefers-color-scheme: dark のときだけ縁に薄い光を足した。

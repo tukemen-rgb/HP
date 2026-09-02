@@ -350,6 +350,67 @@ for (const page of pages) {
   await ctx.close();
 }
 
+/* お問い合わせフォームが実際に動くか。
+   未入力の送信はブラウザの検証で止まること、入力後の送信では
+   選んだ用件と本文が mailto: に組み込まれることを見る。
+   mailto: は画面遷移として捕まえられないので、組み立てに使われる
+   encodeURIComponent を差し替えて中身を記録する。 */
+if (pages.includes("contact.html")) {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  await ctx.route("**://**", (route) =>
+    /^(file|data|blob):/.test(route.request().url()) ? route.continue() : route.abort()
+  );
+  const p = await ctx.newPage();
+  await p.addInitScript(() => {
+    window.__encoded = [];
+    const orig = window.encodeURIComponent;
+    window.encodeURIComponent = (s) => { window.__encoded.push(String(s)); return orig(s); };
+  });
+  const errors = [];
+  p.on("pageerror", (e) => errors.push(String(e.message)));
+  await p.goto(pathToFileURL(join(ROOT, "contact.html")).href, { waitUntil: "domcontentloaded" });
+  await p.waitForTimeout(300);
+
+  // 1. 未入力のまま送信 → ブラウザの検証で止まる
+  await p.click('#contact-form button[type="submit"]');
+  await p.waitForTimeout(300);
+  const blocked = await p.evaluate(() => ({
+    invalid: document.querySelectorAll("#contact-form :invalid").length,
+    encoded: window.__encoded.length,
+  }));
+  if (blocked.invalid === 0) note("contact.html", "未入力でも送信が止まりません（required が効いていない）");
+  if (blocked.encoded > 0) note("contact.html", "未入力なのに mailto: が組み立てられています");
+
+  // 2. 入力して送信 → 用件と本文が mailto: に入る
+  const subjectValue = await p.evaluate(() => {
+    const opts = [...document.querySelectorAll("#f-subject option")].filter((o) => o.value);
+    return opts.length ? opts[0].value : "";
+  });
+  await p.fill("#f-name", "検証 太郎");
+  await p.fill("#f-email", "test@example.com");
+  if (subjectValue) await p.selectOption("#f-subject", subjectValue);
+  await p.fill("#f-message", "自動チェックからの送信テストです。");
+  const agree = await p.$("#contact-form input[type=checkbox][required]");
+  if (agree) await agree.check();
+  await p.click('#contact-form button[type="submit"]');
+  await p.waitForTimeout(400);
+  const sent = await p.evaluate(() => ({
+    encoded: window.__encoded,
+    status: (document.getElementById("form-status") || {}).textContent || "",
+  }));
+  const joined = sent.encoded.join("\n");
+  if (!sent.encoded.length) {
+    note("contact.html", "入力後に送信しても mailto: が組み立てられません");
+  } else {
+    if (subjectValue && !joined.includes(subjectValue)) note("contact.html", `選んだ用件「${subjectValue}」が mailto: に入っていません`);
+    if (!joined.includes("検証 太郎")) note("contact.html", "お名前が mailto: の本文に入っていません");
+    if (!joined.includes("自動チェックからの送信テスト")) note("contact.html", "お問い合わせ内容が mailto: の本文に入っていません");
+    if (!/メールソフト/.test(sent.status)) note("contact.html", "送信後の案内文が表示されません");
+  }
+  for (const e of errors) note("contact.html", `フォーム操作中のエラー: ${e}`);
+  await ctx.close();
+}
+
 /* 外部（Webフォントなど）が遅いときでも、本文の描画がそれを待たないか。
    Google Fonts の CSS を普通の <link rel="stylesheet"> で読むと、
    その応答が返るまでページが真っ白になる。実測で 13 秒待たされたことがある */

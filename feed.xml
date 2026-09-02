@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>SIDRA STUDIO お知らせ</title>
+  <id>https://sidrastudio.com/feed.xml</id>
+  <link rel="self" href="https://sidrastudio.com/feed.xml"/>
+  <link rel="alternate" href="https://sidrastudio.com/news.html"/>
+  <updated>2026-07-30T00:00:00Z</updated>
+  <author><name>SIDRA STUDIO</name></author>
+  <entry>
+    <title>SIDRA STUDIO の設立準備を開始しました。</title>
+    <id>https://sidrastudio.com/news.html#2026-07-30</id>
+    <link rel="alternate" href="https://sidrastudio.com/news.html"/>
+    <updated>2026-07-30T00:00:00Z</updated>
+    <category term="Studio"/>
+    <summary>SIDRA STUDIO の設立準備を開始しました。</summary>
+  </entry>
+</feed>

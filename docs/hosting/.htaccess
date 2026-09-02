@@ -27,6 +27,10 @@
   AddType image/svg+xml .svg
   AddType application/manifest+json .webmanifest
   AddType image/x-icon .ico
+  # feed.xml を Atom として返す（拡張子だけだと application/xml になる）
+  <Files "feed.xml">
+    ForceType application/atom+xml
+  </Files>
 </IfModule>
 
 <IfModule mod_deflate.c>

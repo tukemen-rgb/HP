@@ -16,8 +16,11 @@ import { fileURLToPath } from "node:url";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const findings = [];
 
-const add = (level, file, message, hint) =>
+// 同じ指摘が同じファイルで複数回出ても1件にまとめる（同じアンカーへのリンクが2つある等）
+const add = (level, file, message, hint) => {
+  if (findings.some((f) => f.level === level && f.file === file && f.message === message)) return;
   findings.push({ level, file, message, hint });
+};
 
 const raw = (name) => readFileSync(join(ROOT, name), "utf8");
 /** コメントは表示にも構造にも関わらないので、外してから見る（雛形の使い方メモなど） */
@@ -52,6 +55,33 @@ for (const page of pages) {
     if (path === "" || path === "/") continue;
     if (!existsSync(resolve(base, path))) {
       add("blocker", page, `参照先が存在しません: ${ref}`, "パスの綴りか、ファイルの置き場所を確認");
+    }
+  }
+}
+
+/* ---------- 1-b. ページ内アンカーの実在 ----------
+   about.html#gameyard のような参照は、id を消しても 404 にならず静かに壊れる */
+const idsOf = new Map();
+const idsIn = (page) => {
+  if (!idsOf.has(page)) {
+    idsOf.set(page, new Set([...html(page).matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])));
+  }
+  return idsOf.get(page);
+};
+for (const page of pages) {
+  const src = html(page);
+  for (const m of src.matchAll(/href="([^"#:]*)#([^"]+)"/g)) {
+    const [, file, id] = m;
+    if (id === "") continue;
+    let target;
+    if (!file) target = page;
+    else {
+      const abs = resolve(file.startsWith("/") ? ROOT : dirname(join(ROOT, page)), file.replace(/^\//, ""));
+      target = relative(ROOT, abs);
+      if (!pages.includes(target)) continue; // 存在しないファイルは 1. で指摘済み
+    }
+    if (!idsIn(target).has(id)) {
+      add("blocker", page, `アンカーの参照先がありません: ${file || ""}#${id}`, `${target} に id="${id}" があるか確認`);
     }
   }
 }
@@ -113,12 +143,24 @@ const PLACEHOLDERS = [
   ["2026-07-30", "お知らせの仮の日付", "実際の日付に直すか、記事ごと差し替え"],
 ];
 for (const page of [...pages, "assets/js/contact.js", "robots.txt", "sitemap.xml",
-                    "humans.txt", ".well-known/security.txt"]) {
+                    "humans.txt", ".well-known/security.txt", "feed.xml"]) {
   if (!existsSync(join(ROOT, page))) continue;
   const src = readFileSync(join(ROOT, page), "utf8");
   for (const [needle, label, hint] of PLACEHOLDERS) {
     const n = src.split(needle).length - 1;
     if (n > 0) add("todo", page, `${label} が ${n} 箇所残っています`, hint);
+  }
+}
+
+/* ---------- 5-b. フッターの年号 ----------
+   © の年が固定なので、年が変わったら気づけるようにする */
+{
+  const thisYear = new Date().getFullYear();
+  for (const page of pages) {
+    const m = html(page).match(/&copy;\s*(\d{4})/);
+    if (m && +m[1] < thisYear) {
+      add("warn", page, `フッターの年号が ${m[1]} のままです（今年は ${thisYear}）`, "全ページの &copy; を更新");
+    }
   }
 }
 

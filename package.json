@@ -12,8 +12,9 @@
     "shots": "node tools/visual.mjs --shots",
     "build:og": "node tools/build-og.mjs",
     "build:sitemap": "node tools/build-sitemap.mjs",
+    "build:feed": "node tools/build-feed.mjs",
     "set-domain": "node tools/set-domain.mjs",
-    "verify": "npm run build:sitemap && npm run check && npm run validate && npm run visual",
+    "verify": "npm run build:sitemap && npm run build:feed && npm run check && npm run validate && npm run visual",
     "serve": "npx --yes serve . -l 4173"
   },
   "devDependencies": {
