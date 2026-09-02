@@ -26,6 +26,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 /** ページ別に作るもの。トップは共通版をそのまま使う */
 const PAGES = [
   { file: "about", label: "About", ja: "スタジオについて" },
+  { file: "gameyard", label: "GAMEYARD", ja: "つくることが、孤独な作業でなくなるように。" },
   { file: "works", label: "Works", ja: "作品" },
   { file: "news", label: "News", ja: "お知らせ" },
   { file: "brand", label: "Brand", ja: "ブランド素材" },

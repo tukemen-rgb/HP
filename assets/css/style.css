@@ -986,8 +986,10 @@ a:hover {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
 }
 
+/* 「2列」の名のとおり、広い画面でも2列までにする。
+   320px の最小幅だけだと 1160px の幅で3列になり、4枚が 3+1 に割れる */
 .grid--2 {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, max(320px, 40%)), 1fr));
 }
 
 .card {
@@ -1397,8 +1399,14 @@ a.news-item:hover {
 
 @media (min-width: 720px) {
   .motifs li {
-    grid-template-columns: 15rem 1fr;
+    /* 説明側は minmax(0, …) にしないと、長い語で最小幅が広がって横にはみ出す */
+    grid-template-columns: 15rem minmax(0, 1fr);
     align-items: baseline;
+  }
+
+  /* カードの中は幅が半分しかないので、見出しと説明を縦に積む */
+  .card .motifs li {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -21,6 +21,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const PRIORITY = {
   "index.html": "1.0",
   "about.html": "0.8",
+  "gameyard.html": "0.9",
   "works.html": "0.8",
   "contact.html": "0.7",
   "news.html": "0.6",
