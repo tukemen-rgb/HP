@@ -24,9 +24,9 @@ npm run serve      # http://localhost:4173 でローカル確認
 - [ ] サイト内の仮ドメインを一括置換
 
 ```bash
-grep -rl 'sidrastudio.com' . --include='*.html' --include='*.txt' --include='*.xml' --include='*.js' \
-  | xargs sed -i 's|sidrastudio\.com|取得したドメイン|g'
-npm run check   # 「仮ドメイン」の指摘が消えることを確認
+npm run set-domain -- 取得したドメイン --dry   # 何が変わるか確認
+npm run set-domain -- 取得したドメイン         # 実行
+npm run verify                                 # 「仮ドメイン」の指摘が消えることを確認
 ```
 
 対象：各ページの `canonical` / `og:url` / `og:image` / 構造化データ、`robots.txt`、`sitemap.xml`、`assets/js/contact.js`
@@ -97,6 +97,9 @@ npm run check   # 「仮ドメイン」の指摘が消えることを確認
 ## 7. 公開直前の最終確認
 
 - [ ] `npm run verify` が通る
+- [ ] お知らせの仮の日付（2026-07-30）を実際の日付に直す、または記事ごと差し替える
+- [ ] 公開したその日に「公式サイトを公開しました」のお知らせを1件追加する
+      （公開前から書いてあると事実と違うので、いまは載せていません）
 - [ ] 実機（スマートフォン）で表示を確認
 - [ ] OGP のプレビュー確認（[X Card Validator](https://cards-dev.twitter.com/validator) など）
 - [ ] `sitemap.xml` の `lastmod` を公開日に更新
@@ -135,5 +138,9 @@ npm run check   # 「仮ドメイン」の指摘が消えることを確認
 
 - JavaScript のエラー
 - 横スクロールの発生（320 / 768 / 1440px）
-- キーボードによるモバイルメニューの開閉
+- キーボードによるモバイルメニューの開閉と、開いた状態でフォーカスが背後へ抜けないか
 - 極端に小さい文字
+- 文字と背景のコントラスト比（WCAG AA）
+- JavaScript を切った状態で本文が見えるか
+- 印刷したときに本文が出るか、濃い背景が残っていないか
+- 外部の応答が遅いときに本文の描画が待たされないか

@@ -259,6 +259,93 @@ for (const page of pages) {
   await ctx.close();
 }
 
+/* JavaScript が動かない環境で本文が消えないか。
+   .reveal は要素をいったん透明にするので、隠す指定が html.js より外に出ていると
+   JS 無効の閲覧者・main.js の読み込みに失敗した閲覧者に白紙が出る。 */
+{
+  const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 900 } });
+  await ctx.route("**://**", (route) =>
+    /^(file|data|blob):/.test(route.request().url()) ? route.continue() : route.abort()
+  );
+  const p = await ctx.newPage();
+  for (const page of pages) {
+    await p.goto(pathToFileURL(join(ROOT, page)).href, { waitUntil: "domcontentloaded" });
+    await p.waitForTimeout(200);
+    const hidden = await p.evaluate(() => {
+      const els = [...document.querySelectorAll(".reveal")];
+      if (!els.length) return { total: 0, hidden: 0 };
+      return {
+        total: els.length,
+        hidden: els.filter((e) => parseFloat(getComputedStyle(e).opacity) < 0.5).length,
+      };
+    });
+    if (hidden.hidden > 0) {
+      note(page, `JavaScript を切ると本文の ${hidden.hidden}/${hidden.total} 要素が見えません`
+        + "（.reveal を隠す指定は html.js の内側に置く）");
+    }
+  }
+  await ctx.close();
+}
+
+/* 印刷したときに本文が出るか。会社概要を紙に出す場面があるため。
+   .reveal が透明なまま刷られると、ほぼ白紙になる。 */
+{
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  await ctx.route("**://**", (route) =>
+    /^(file|data|blob):/.test(route.request().url()) ? route.continue() : route.abort()
+  );
+  const p = await ctx.newPage();
+  await p.emulateMedia({ media: "print" });
+  for (const page of pages) {
+    await p.goto(pathToFileURL(join(ROOT, page)).href, { waitUntil: "domcontentloaded" });
+    await p.waitForTimeout(200);
+    const r = await p.evaluate(() => {
+      const els = [...document.querySelectorAll(".reveal")];
+      const faint = els.filter((e) => parseFloat(getComputedStyle(e).opacity) < 0.9).length;
+      // 濃紺のまま刷るとインクを使い切るうえ読みにくい
+      const deep = [...document.querySelectorAll(".section--deep")].filter((e) => {
+        const bg = getComputedStyle(e).backgroundColor.match(/[\d.]+/g);
+        return bg && +bg[0] + +bg[1] + +bg[2] < 400;
+      }).length;
+      return { total: els.length, faint, deep };
+    });
+    if (r.faint > 0) note(page, `印刷時に ${r.faint}/${r.total} 要素が透明のままです`);
+    if (r.deep > 0) note(page, `印刷時に濃い背景が ${r.deep} 箇所残っています`);
+  }
+  await ctx.close();
+}
+
+/* 開いたモバイルメニューから、キーボード操作で背後の本文へ抜けないか。
+   ドロワーは画面全体を覆うので、抜けると「見えない場所」にフォーカスが移る。 */
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const p = await ctx.newPage();
+  await p.goto(pathToFileURL(join(ROOT, "index.html")).href, { waitUntil: "domcontentloaded" });
+  await p.waitForTimeout(300);
+  await p.focus(".nav-toggle");
+  await p.keyboard.press("Enter");
+  await p.waitForTimeout(400);
+  let escaped = null;
+  for (let i = 0; i < 10; i++) {
+    await p.keyboard.press("Tab");
+    const out = await p.evaluate(() => {
+      const a = document.activeElement;
+      if (a.closest(".nav") || a.classList.contains("nav-toggle")) return null;
+      return a.tagName.toLowerCase() + "「" + (a.textContent || "").trim().slice(0, 12) + "」";
+    });
+    if (out) { escaped = `${i + 1} 回目で ${out}`; break; }
+  }
+  if (escaped) {
+    note("index.html", `メニューを開いた状態の Tab が背後の本文へ抜けます（${escaped}）`);
+  }
+  // Escape で閉じたあと、開くボタンにフォーカスが戻るか
+  await p.keyboard.press("Escape");
+  await p.waitForTimeout(300);
+  const returned = await p.evaluate(() => document.activeElement.classList.contains("nav-toggle"));
+  if (!returned) note("index.html", "Escape で閉じたあと、フォーカスが開閉ボタンに戻りません");
+  await ctx.close();
+}
+
 /* 外部（Webフォントなど）が遅いときでも、本文の描画がそれを待たないか。
    Google Fonts の CSS を普通の <link rel="stylesheet"> で読むと、
    その応答が返るまでページが真っ白になる。実測で 13 秒待たされたことがある */

@@ -92,12 +92,17 @@ npx serve .        # または python3 -m http.server 8000
 決まったドメインへ一括置換してください。
 
 ```bash
-# 例：sidra.studio に変更する場合
-grep -rl 'sidrastudio.com' . --include='*.html' --include='*.txt' --include='*.xml' \
-  | xargs sed -i 's|https://sidrastudio.com|https://sidra.studio|g'
+npm run set-domain -- sidra.studio --dry   # 変更内容だけ表示
+npm run set-domain -- sidra.studio         # 実行
+npm run verify
 ```
 
-対象：各ページの `canonical` / `og:url` / `og:image` / 構造化データ、`robots.txt`、`sitemap.xml`
+`sed` を手で打つと `assets/js/contact.js` や `news/` 以下、`docs/` を取りこぼします。
+このスクリプトは HTML・`robots.txt`・`sitemap.xml`・JavaScript・ドキュメントまで
+まとめて書き換えます（現状 14 ファイル・66 箇所）。
+
+対象：各ページの `canonical` / `og:url` / `og:image` / 構造化データ、
+`robots.txt`、`sitemap.xml`、`assets/js/contact.js` のメールアドレス
 
 > ドメイン・商標（J-PlatPat 第9類・第41類）の確認は未完了です。ブランド検討メモの「残タスク」もあわせてご確認ください。
 
@@ -220,17 +225,44 @@ Webフォント（Google Fonts）は描画を止めない形で読み込んで�
 
 ```html
 <link rel="preload" as="style" href="…">
-<link rel="stylesheet" href="…" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="…" media="print" data-webfont>
 <noscript><link rel="stylesheet" href="…"></noscript>
 ```
+
+`media="print"` のままでは画面に適用されないので、`assets/js/main.js` が
+`link[data-webfont]` を `media="all"` に切り替えます。HTML 側に `onload` を
+書かないので、Content-Security-Policy を `script-src 'self'` のまま運用できます。
 
 普通の `<link rel="stylesheet">` にすると、Google Fonts の応答が返るまで
 ページが真っ白のままになります（届かない環境での実測で 13 秒）。
 上の形なら本文は 0.2 秒ほどで出て、フォントは届いた時点で差し替わります。
+フォント差し替え時の CLS は実測 0.0026 で、対策は不要でした。
 
 `npm run visual` の最後で、外部の応答を 5 秒遅らせた状態でも
 本文が 1.5 秒以内に描画されるかを確認しています。
 描画を止める外部リソースを足すと、ここで引っかかります。
+
+### JavaScript が動かないとき
+
+スクロールで浮かび上がる要素（`.reveal`）は、いったん透明にしてから表示します。
+この「隠す」指定を無条件に書くと、**JavaScript を切っている閲覧者や
+`main.js` の読み込みに失敗した閲覧者に、白紙のページが出ます。**
+
+そのため隠す指定は `html.js`（`main.js` が自分で付けるクラス）の内側だけに置き、
+`@media (scripting: none)` でも念のため打ち消しています。
+`npm run visual` が JavaScript を切った状態で全ページを開いて確認します。
+
+### 印刷
+
+会社概要を紙に出す場面があるので、印刷用のスタイルを入れてあります。
+
+- `.reveal` を必ず見える状態に戻す（入れないとほぼ白紙になります）
+- 濃紺の面を白地・黒文字に（インクの節約と可読性）
+- ヘッダー・ナビ・ボタン・装飾の波を隠す
+- カードや項目が紙の切れ目でちぎれないようにする
+- 外部リンクは URL を併記する
+
+こちらも `npm run visual` が印刷表示で全ページを確認します。
 
 ### アクセシビリティ
 

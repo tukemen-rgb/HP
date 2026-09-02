@@ -266,7 +266,8 @@ a:hover {
   color: var(--white);
 }
 
-.section--deep .sec-lead {
+.section--deep .sec-lead,
+.section--deep .note {
   color: rgba(234, 246, 250, 0.78);
 }
 
@@ -1743,16 +1744,28 @@ a.news-item:hover {
   color: var(--shine);
 }
 
-/* ---------- 22. Reveal on scroll ---------- */
-.reveal {
+/* ---------- 22. Reveal on scroll ----------
+   隠すのは JavaScript が動いているときだけにする。
+   .reveal を無条件に opacity:0 にすると、JS を切っている環境や
+   main.js の読み込みに失敗した環境で本文が一切見えなくなる。
+   html.js は main.js が自分で付けるので、ファイルが読めなければ付かない。 */
+.js .reveal {
   opacity: 0;
   translate: 0 24px;
   transition: opacity 0.8s var(--ease), translate 0.8s var(--ease);
 }
 
-.reveal.is-visible {
+.js .reveal.is-visible {
   opacity: 1;
   translate: 0 0;
+}
+
+/* JavaScript が無効な環境（クラスの付け外しさえ走らない）を確実に救う */
+@media (scripting: none) {
+  .js .reveal {
+    opacity: 1;
+    translate: 0 0;
+  }
 }
 
 .reveal-delay-1 {
@@ -1812,15 +1825,112 @@ a.news-item:hover {
   }
 }
 
+/* 会社概要を紙に出すことは普通にあるので、読める形で刷れるようにしておく。
+   スクロール表示（.reveal）は印刷では動かないため、必ず見える状態に戻す。 */
 @media print {
-  .header,
-  .footer,
-  .hero__waves,
-  .cta {
-    display: none;
+  @page {
+    margin: 16mm 14mm;
   }
 
+  .header,
+  .footer,
+  .cta,
+  .skip-link,
+  .hero__waves,
+  .hero__stars,
+  .hero__glow,
+  .hero__delphinus,
+  .hero__scroll,
+  .page-hero__wave,
+  .nav,
+  .nav-toggle,
+  .btn-row,
+  .btn,
+  .breadcrumb {
+    display: none !important;
+  }
+
+  /* 画面では順に浮かび上がる要素。紙では最初から見えていないと白紙になる */
+  .js .reveal,
+  .reveal {
+    opacity: 1 !important;
+    translate: none !important;
+    transition: none !important;
+  }
+
+  html,
   body {
+    background: #fff;
     color: #000;
+  }
+
+  /* 濃紺の面は、そのままだとインクを大量に使ううえ読みにくい */
+  .section--deep,
+  .hero,
+  .page-hero {
+    background: #fff !important;
+    color: #000 !important;
+    padding-block: 0 0 1.5rem;
+  }
+
+  .section--deep h2,
+  .section--deep h3,
+  .section--deep .sec-title,
+  .hero__title,
+  .page-hero__title {
+    color: #000 !important;
+  }
+
+  /* 濃紺前提で明るい色を指定している要素をまとめて落とす。
+     個別に列挙すると取りこぼすので、いったん全部黒にしてから金と本文を戻す */
+  .section--deep * {
+    color: #000 !important;
+  }
+
+  .section--deep .eyebrow,
+  .section--deep a,
+  .section--deep .motifs b,
+  .section--deep [style*="var(--gold)"] {
+    color: #5c410a !important;
+  }
+
+  .section--deep p,
+  .section--deep .sec-lead,
+  .section--deep .motifs span,
+  .section--deep [style*="rgba(234"] {
+    color: #222 !important;
+  }
+
+  .section--deep .motifs li {
+    border-bottom-color: #ccc !important;
+  }
+
+  .section {
+    padding-block: 1.5rem;
+  }
+
+  /* 項目やカードが紙の切れ目でちぎれないように */
+  .card,
+  .motifs li,
+  .pv-block,
+  .work,
+  .profile tr,
+  .news-list li {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* 紙ではリンク先が分からないので、外部リンクだけ URL を添える */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    word-break: break-all;
   }
 }

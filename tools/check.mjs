@@ -9,6 +9,7 @@
  * 「blocker」は公開前に必ず潰すもの、「warn」は判断が要るもの。
  */
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { join, dirname, resolve, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -109,6 +110,7 @@ const PLACEHOLDERS = [
   ["contact@sidrastudio.com", "仮メールアドレス", "受信できるアドレスへ差し替え"],
   ['<td>—</td>', "スタジオ概要の未記入欄", "代表者名などを記入、または行ごと削除"],
   ["formspree.io/f/xxxxxxxx", "フォーム送信先の例示", "実際のエンドポイントに差し替えるか、空のまま（メール起動）"],
+  ["2026-07-30", "お知らせの仮の日付", "実際の日付に直すか、記事ごと差し替え"],
 ];
 for (const page of [...pages, "assets/js/contact.js", "robots.txt", "sitemap.xml"]) {
   if (!existsSync(join(ROOT, page))) continue;
@@ -178,7 +180,29 @@ for (const page of pages) {
   }
 }
 
-/* ---------- 9. 生成物の鮮度 ---------- */
+/* ---------- 9. 生成物の鮮度 ----------
+   更新日時（mtime）だけで比べると、クローン直後に誤検知する。
+   git は取り出した順に時刻を付けるので、元データのほうが数ミリ秒新しくなりうる。
+   まず git の最終変更コミットで比べ、git が使えないときだけ mtime に落とす。 */
+function gitTime(abs) {
+  try {
+    const out = execFileSync("git", ["log", "-1", "--format=%ct", "--", abs], {
+      cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"],
+    }).trim();
+    return out ? +out : null;
+  } catch {
+    return null;
+  }
+}
+
+/** 生成物が元データより古いか。判断がつかないときは「古くない」と見なす */
+function isStale(source, built) {
+  const [gs, gb] = [gitTime(source), gitTime(built)];
+  if (gs !== null && gb !== null) return gs > gb;
+  // git で分からない場合は mtime。クローン直後の誤差を避けるため2秒の余裕を見る
+  return statSync(source).mtimeMs > statSync(built).mtimeMs + 2000;
+}
+
 const ogSource = join(ROOT, "tools/og-image.html");
 if (existsSync(ogSource)) {
   const built = ["assets/img/og-image.jpg"];
@@ -190,7 +214,7 @@ if (existsSync(ogSource)) {
     const abs = join(ROOT, rel);
     if (!existsSync(abs)) {
       add("warn", rel, "生成されていません", "npm run build:og で生成");
-    } else if (statSync(ogSource).mtimeMs > statSync(abs).mtimeMs) {
+    } else if (isStale(ogSource, abs)) {
       add("warn", rel, "元データより古いままです", "npm run build:og で再生成");
     }
   }
