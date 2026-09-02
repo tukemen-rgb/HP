@@ -44,7 +44,8 @@ const TARGET_EXT = /\.(html|txt|xml|js|mjs|json|webmanifest|md)$/;
 function collect(dir = ROOT) {
   const out = [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
-    if (entry.name.startsWith(".") && entry.name !== ".htaccess") continue;
+    // 隠しファイルは飛ばすが、.htaccess と .well-known（security.txt）は対象
+    if (entry.name.startsWith(".") && entry.name !== ".htaccess" && entry.name !== ".well-known") continue;
     const full = join(dir, entry.name);
     if (entry.isDirectory()) {
       if (SKIP_DIRS.has(entry.name)) continue;

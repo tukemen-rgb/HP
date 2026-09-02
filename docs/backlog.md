@@ -17,16 +17,6 @@
 
 ## 未着手
 
-- [ ] **GAMEYARD のページ（`gameyard.html`）**
-  引継ぎ資料にある材料だけで組む：投稿サイトではない／学ぶ・借りる・残す／
-  「初めて」を祝う（ランキングなし）／Mission・Vision・Core Value／目指す世界／
-  育てたいもの／Founder100（募集ではなく仲間探し、やること6つ、特典5つ、
-  順位ではなく時代を刻む印）。参加方法は未定なので、お問い合わせへ誘導する。
-  ナビに追加。OG 画像を1枚足す。
-
-- [ ] **`.well-known/security.txt` と `humans.txt`**
-  脆弱性の連絡先と、つくった人の記載。どちらも小さいが、ないと探される。
-
 - [ ] **ファビコンのダークモード対応**
   SVG の中で `prefers-color-scheme` を見て、暗いタブでも一番星が見えるように。
 
@@ -49,6 +39,13 @@
   `tools/visual.mjs` で確認する。
 
 ## 完了
+
+- [x] GAMEYARD のページ（2026-09-02）
+      `gameyard.html`。引継ぎ資料の材料だけで構成し、参加方法が未定なので
+      お問い合わせへ誘導。ナビ・フッター・OG・sitemap に追加。
+      ついでに .grid--2 が3列になる件と、カード内 .motifs のはみ出しを修正
+- [x] `.well-known/security.txt` と `humans.txt`（2026-09-02）
+      仮ドメインが入るので check.mjs と set-domain.mjs の対象に加えた
 
 - [x] 公開前チェックのスクリプト（`tools/check.mjs`）
 - [x] ブラウザ表示チェックのスクリプト（`tools/visual.mjs`）

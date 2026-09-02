@@ -1,0 +1,7 @@
+# セキュリティ上の問題を見つけた方への連絡先（RFC 9116）
+# 公開後は Expires を1年ごとに更新してください。
+Contact: mailto:contact@sidrastudio.com
+Contact: https://sidrastudio.com/contact.html
+Expires: 2027-09-30T00:00:00.000Z
+Preferred-Languages: ja, en
+Canonical: https://sidrastudio.com/.well-known/security.txt

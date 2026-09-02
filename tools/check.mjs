@@ -112,7 +112,8 @@ const PLACEHOLDERS = [
   ["formspree.io/f/xxxxxxxx", "フォーム送信先の例示", "実際のエンドポイントに差し替えるか、空のまま（メール起動）"],
   ["2026-07-30", "お知らせの仮の日付", "実際の日付に直すか、記事ごと差し替え"],
 ];
-for (const page of [...pages, "assets/js/contact.js", "robots.txt", "sitemap.xml"]) {
+for (const page of [...pages, "assets/js/contact.js", "robots.txt", "sitemap.xml",
+                    "humans.txt", ".well-known/security.txt"]) {
   if (!existsSync(join(ROOT, page))) continue;
   const src = readFileSync(join(ROOT, page), "utf8");
   for (const [needle, label, hint] of PLACEHOLDERS) {

@@ -51,7 +51,8 @@
 | `404.html` | 404 | ページが見つからない場合 |
 | `news/_template.html` | お知らせ詳細の雛形 | 記事1本ぶんの型（noindex。コピーして使う） |
 
-その他：`robots.txt` / `sitemap.xml`（自動生成）/ `.nojekyll`（GitHub Pages 用）
+その他：`robots.txt` / `sitemap.xml`（自動生成）/ `.nojekyll`（GitHub Pages 用）/
+`humans.txt`（つくった人）/ `.well-known/security.txt`（脆弱性の連絡先。`Expires` を1年ごとに更新）
 
 `sitemap.xml` は手で書きません。`npm run verify` の最初に
 `tools/build-sitemap.mjs` が走り、HTML の実体から組み立て直します。
