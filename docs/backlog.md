@@ -17,27 +17,17 @@
 
 ## 未着手
 
-- [ ] **お知らせを1コマンドで追加する `tools/new-post.mjs`**
-  `npm run new:post -- 2026-09-10 "見出し" --slug first-title --tag Studio` で、
-  雛形から詳細ページを作り、noindex を外し、news.html と index.html の一覧に
-  リンク付きの1行を足す。スマホからでも記事を出せるように、手順を1つにする。
-  雛形の【 】が残っていたら check.mjs が止めることも確認する。
-
-- [ ] **GitHub Actions で `npm run verify` を回す**
-  push と pull request のたびに、この環境と同じ検証が GitHub 側で走るようにする。
-  Playwright のブラウザは `npx playwright install --with-deps chromium`。
-  失敗したら赤くなるだけで、公開や外部送信は一切しない。
-
-- [ ] **検証スクリプト自身の自己テスト `tools/selftest.mjs`**
-  一時ディレクトリにサイトを複製して既知の欠陥を仕込み（アンカー切れ、禁止語、
-  壊れた JSON-LD、alt 抜け、雛形の【 】残り）、check.mjs がそれぞれを検出することを確認する。
-  チェックを改修したときに、検出力が落ちていないかを機械で見る。
-
-- [ ] **404 ページに主要ページへの導線**
-  いまはトップへ戻るだけ。About / GAMEYARD / Works / News / Contact への
-  リンクを並べて、迷った人がそこから進めるようにする。
-
 ## 完了
+
+- [x] お知らせを1コマンドで追加（2026-10-09）
+      `npm run new:post -- <日付> "<見出し>" --slug <英数字>`。雛形から詳細ページを作り、
+      一覧2箇所にリンク付きで足す。公開ページに【 】が残ったら check が止める
+- [x] GitHub Actions（2026-10-09）
+      `.github/workflows/verify.yml`。push と PR で npm run verify と自己テストが走る。
+      公開や外部送信はしない。初回の結果は未確認（次の項目）
+- [x] 検証スクリプトの自己テスト（2026-10-09）
+      `npm run selftest`。既知の欠陥 11 種を仕込んで、check.mjs が全部検出することを確認
+- [x] 404 ページに主要ページへの導線（2026-10-09）
 
 - [x] 使われていない CSS の洗い出し（2026-09-02）
       `tools/audit-css.mjs`（npm run audit:css）。132 クラス中 4 つが旧ブランドの残骸

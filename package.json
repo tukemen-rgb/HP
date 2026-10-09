@@ -10,6 +10,8 @@
     "validate": "html-validate *.html news/*.html",
     "lint:css": "stylelint assets/css/style.css",
     "audit:css": "node tools/audit-css.mjs",
+    "selftest": "node tools/selftest.mjs",
+    "new:post": "node tools/new-post.mjs",
     "visual": "node tools/visual.mjs",
     "shots": "node tools/visual.mjs --shots",
     "build:og": "node tools/build-og.mjs",

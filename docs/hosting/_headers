@@ -27,5 +27,9 @@
 /assets/img/*
   Cache-Control: public, max-age=604800
 
+/feed.xml
+  Content-Type: application/atom+xml; charset=utf-8
+  Cache-Control: public, max-age=3600
+
 /favicon.ico
   Cache-Control: public, max-age=604800

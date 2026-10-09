@@ -143,7 +143,17 @@ var ENDPOINT = "https://formspree.io/f/xxxxxxxx"; // ここに発行された UR
 
 ### 5. お知らせの追加
 
-`news.html` と `index.html` の `.news-list` に `<li>` を追加します（新しいものを上へ）。
+いちばん簡単な方法は1コマンドです。
+
+```bash
+npm run new:post -- 2026-10-20 "第一作のタイトルを発表しました。" --slug first-title --tag Title
+```
+
+雛形から `news/2026-10-20-first-title.html` を作り、`news.html` と `index.html` の一覧の先頭に
+リンク付きの1行を足します。あとは生成されたファイルを開いて本文を書き、`npm run verify` を通すだけです
+（sitemap と feed は自動で追いつきます）。本文に雛形の【 】が残っていると check が止めます。
+
+手で足す場合は、`news.html` と `index.html` の `.news-list` に `<li>` を追加します（新しいものを上へ）。
 
 ```html
 <li>
@@ -266,6 +276,26 @@ Webフォント（Google Fonts）は描画を止めない形で読み込んで�
 - 外部リンクは URL を併記する
 
 こちらも `npm run visual` が印刷表示で全ページを確認します。
+
+### コマンド一覧
+
+| コマンド | することを一言で |
+|---|---|
+| `npm run verify` | 公開前の検証をすべて実行（これが通れば公開できる状態） |
+| `npm run check` | 静的チェック（リンク・禁止語・仮の値・JSON-LD など） |
+| `npm run validate` | HTML の構造チェック（html-validate） |
+| `npm run lint:css` | CSS のチェック（stylelint） |
+| `npm run visual` | ブラウザでの表示チェック（崩れ・コントラスト・JS無効・印刷・操作） |
+| `npm run selftest` | 検証スクリプト自身のテスト（欠陥を仕込んで検出できるか） |
+| `npm run new:post -- 日付 "見出し" --slug 英数字` | お知らせを追加 |
+| `npm run set-domain -- 新ドメイン` | ドメインを一括置換（`--dry` で確認のみ） |
+| `npm run build:og` | OG画像を再生成 |
+| `npm run build:sitemap` / `build:feed` | sitemap・Atom フィードを再生成（verify が自動で実行） |
+| `npm run audit:css` | 使われていない CSS クラスを列挙 |
+| `npm run shots` | 全ページのスクリーンショットを `.preview/` に保存 |
+
+GitHub に push すると、`.github/workflows/verify.yml` が同じ検証を自動で回します
+（失敗すると赤くなるだけで、公開や外部への送信はしません）。
 
 ### CSS の品質
 

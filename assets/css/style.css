@@ -1715,6 +1715,26 @@ a.news-item:hover {
   color: var(--shine);
 }
 
+/* 404 から主なページへ */
+.notfound__links ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem 1.75rem;
+}
+
+.notfound__links a {
+  font-size: 0.92rem;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 0.15em;
+}
+
+.notfound__links a:hover {
+  border-bottom-color: currentcolor;
+}
+
 /* ---------- 22. Reveal on scroll ----------
    隠すのは JavaScript が動いているときだけにする。
    .reveal を無条件に opacity:0 にすると、JS を切っている環境や

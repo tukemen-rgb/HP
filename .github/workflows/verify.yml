@@ -1,0 +1,32 @@
+# push と pull request のたびに、手元と同じ検証（npm run verify）を GitHub 側で回す。
+# 失敗すれば赤くなるだけで、公開や外部への送信は一切しない。
+name: verify
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # build-sitemap / check.mjs が git の最終変更日を見るので、履歴ごと取る
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # tools/ はローカルの playwright に落ちるので、その版に合うブラウザを入れる
+      - run: npx playwright install --with-deps chromium
+
+      - run: npm run verify
+
+      - name: 検証スクリプトの自己テスト
+        run: node tools/selftest.mjs

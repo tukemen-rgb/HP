@@ -111,6 +111,7 @@ const OG_REQUIRED = [
   [/<link rel="canonical"/, "canonical"],
   [/<meta property="og:title"/, "og:title"],
   [/<meta property="og:image"/, "og:image"],
+  [/<meta property="og:image:alt"/, "og:image:alt（共有カードの読み上げ用）"],
 ];
 for (const page of pages) {
   const src = html(page);
@@ -207,6 +208,15 @@ if (existsSync(join(ROOT, "site.webmanifest"))) {
       add("warn", "site.webmanifest", `theme_color（${manifest.theme_color}）がページの theme-color（${[...themes].join(", ")}）と違います`);
     }
   }
+}
+
+/* ---------- 5-d. 雛形の【 】が残っていないか ----------
+   news/_template.html 自身は noindex の雛形なので対象外。それ以外の公開ページで
+   【 】が残っていれば、書きかけのまま出ることになるので止める */
+for (const page of pages) {
+  if (page.endsWith("_template.html")) continue;
+  const m = html(page).match(/【[^】]{0,40}】?/);
+  if (m) add("blocker", page, `雛形の【 】が残っています: ${m[0].slice(0, 30)}`, "本文を書き換えるか、その段落を削除");
 }
 
 /* ---------- 6. 使わないと決めた語 ---------- */
